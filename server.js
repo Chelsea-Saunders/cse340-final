@@ -3,7 +3,7 @@ import express from 'express';
 import { fileURLToPath } from 'url';
 import path from 'path';
 
-import routes from './src/controllers/routes.js';
+import routes from './controllers/routes.js';
 import { addLocalVariables } from './src/middleware/global.js';
 
 //SERVER CONFIGURATION
