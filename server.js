@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 
 import routes from './src/controllers/routes.js';
-import { addLocalVariables } from './src/middleware/global.js';
+// import { addLocalVariables } from './src/middleware/global.js';
 
 //SERVER CONFIGURATION
 const __filename = fileURLToPath(import.meta.url);
