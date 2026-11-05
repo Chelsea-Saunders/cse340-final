@@ -1,0 +1,15 @@
+/* tablet screen width */
+@media (min-width: 500px) and (max-width: 900px) {
+  #wearable-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+}
+@media (min-width: 901px) {
+  #wearable-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+}

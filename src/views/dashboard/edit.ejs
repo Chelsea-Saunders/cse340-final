@@ -1,0 +1,26 @@
+<%- include('../partials/header') %>
+
+<main class="dashboard-edit">
+    <h1>Edit Product</h1>
+
+    <form action="/dashboard/edit/<%= product._id %>" method="POST">
+        <label for="title">Title</label>
+        <input types="text" id="title" name="title" value="<%= product.title %>">
+        
+        <label for="prict">Price</label>
+        <input type="text" id="price" name="price" value="<%= product.price %>">
+
+        <label for="description">Description</label>
+        <textarea id="description" name="description"><%= product.description %></textarea>
+
+        <label for="category">Category</label>
+        <input type="text" id="category" name="category" value="<%= product.category %>">
+
+        <label for="customreOrderInfo">Custom Order Info</label>
+        <textarea id="customreOrderInfo" name="customOrderInfo"><%= product.customOrderInfo %></textarea>
+
+        <button type="submit">Save Changes</button>
+    </form>
+</main>
+
+<%- include('../partials/footer') %>

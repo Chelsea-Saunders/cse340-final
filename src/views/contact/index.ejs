@@ -1,0 +1,36 @@
+<%- include('../partials/header') %>
+<div class="contact-container">
+            <form action="" class="contact-left">
+                <div class="contact-left-title">
+                    <h2>Get in touch</h2>
+                    <hr>
+                </div>
+                <input type="text" name="name" placeholder="Your Name" class="contact-inputs" required>
+                <input type="email" name="email" placeholder="Your Email" class="contact-inputs" required>
+                <textarea name="message" placeholder="Your Message" class="contact-inputs" required></textarea>
+                <button type="submit">Submit</button>
+            </form>
+            <div class="contact-right">
+
+            </div>
+        </div>
+        <div class="chat-container">
+            <div class="chat-bubble" id="chatToggle">💬</div>
+            <div class="chat-box" id="chatBox">
+                <div class="chat-header">
+                    <span>Need help?</span>
+                    <button id="closeChat">x</button>
+                </div>
+                <div class="chat-body">
+                    <form id="chat-form">
+                        <label for="chat-message">
+                            Hi! Do you have a question or want to special order a product? Let's talk about it!
+                        </label>
+                        <textarea id="chat-message" name="message" rows="4" required></textarea><br>
+                        <button type="submit">Send</button>
+                    </form>
+                </div>
+            </div>
+        </div> -->
+        <!-- <section id="custom-list"></section>
+<%- include('../partials/footer') %>

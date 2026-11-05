@@ -1,0 +1,61 @@
+/* ABOUT ME PAGE */
+#about-me {
+  display: block;
+  margin: 0 auto;
+  width: 90%;
+  border-radius: 10px;
+  box-shadow: 5px 5px 10px #6f7364;
+  margin: 20px auto;
+  margin-bottom: 50px;
+}
+
+#bio-about-me {
+  background-color: white;
+  color: black;
+  text-align: center;
+  font-family: "Antonio", sans-serif;
+  font-size: 0.9rem;
+  position: relative;
+  justify-self: center;
+  align-self: center;
+  border-radius: 10px;
+  width: 80% !important;
+  box-shadow: 5px 5px 10px #6f7364;
+  padding: 20px;
+  margin-bottom: 75px;
+}
+
+.contact {
+  background-color: white;
+  color: black;
+  text-align: center;
+  font-family: "Antonio", sans-serif;
+  font-size: 1em;
+  position: relative;
+  justify-self: center;
+  align-self: center;
+  border-radius: 10px;
+  width: 85% !important;
+  box-shadow: 5px 5px 10px #6f7364;
+  padding: 3px;
+  margin-bottom: 75px;
+}
+
+p#two {
+  font-weight: 700;
+}
+
+/* tablet screen width */
+@media (min-width: 500px) and (max-width: 900px) {
+  #about-me {
+    width: 60%;
+  }
+  #bio-about-me {
+    font-size: 0.9rem;
+  }
+}
+@media (min-width: 901px) {
+  #about-me {
+    width: 30%;
+  }
+}

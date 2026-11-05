@@ -1,0 +1,18 @@
+<%- include('../partials/header') %>
+
+<div class="wearables" id="wearables">
+    <div class="wearable-card">
+        <% if (products && products.length) { %>
+            <% products.forEach((product) => { %>
+                <div class="slides">
+                    <img src="<%= product.images.large %>" alt="<%= product.alt %>">
+                    <h2><%= product.title %></h2>
+                </div>
+            <% }) %>
+        <% } else { %>
+            <p>No Wearable items available right now.</p>
+        <% } %>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>

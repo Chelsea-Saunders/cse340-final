@@ -1,0 +1,29 @@
+<%- include('../partials/header') %>
+<main>
+    <h1>Leather Image Gallery</h1>
+    <div class="gallery" id="product-gallery">
+        <% products.forEach((product) => { %>
+            <figure class="product-card">
+                <img 
+                    src="<%= product.images.small %>"
+                    srcset="
+                        <%= product.images.small %> 250vw, 
+                        <%= product.images.medium %> 400vw, 
+                        <%= product.images.large %> 500vw
+                    "
+                    sizes="(max-width: 700px) 90vw, 400px"
+                    alt="<%= product.alt %>"
+                    loading="lazy"
+                    decoding="async"
+                >
+                <figcaption class="product-info">
+                    <h3><%= product.title %></h3>
+                    <p class="price"><%= product.price %></p>
+                    <p class="description"><%= product.description %></p>
+                </figcaption>
+            </figure>
+        <% }) %>
+    </div>
+</main>
+
+<%- include('../partials/footer') %>

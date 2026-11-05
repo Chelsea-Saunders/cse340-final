@@ -1,0 +1,23 @@
+<%- include('../partials/header') %>
+    <main>
+        <p id="description">I offer a wide range of handcrafted items, from hat holders 
+            to welding helmets, and everything in between. Whether you're
+            looking for a unique accessory, durable protective gear, or 
+            a one-of-a-kind piece, I’m always open to experimenting with
+            new ideas and techniques. Each project is made with 
+            precision, care, and attention to detail, ensuring a 
+            high-quality, personalized result. Let’s bring your vision 
+            to life with custom leather craftsmanship just for you!
+        </p>
+        <div class="slider-container" id="slider-container">
+            <div class="slideX">
+                <% products.forEach((product) => { %>
+                    <div class="slides">
+                        <h2><%= product.title %></h2>
+                        <img src="<%= product.images.large %>" alt="<%= product.alt %>">
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+        <%- include('..contact/chat-bubble') %>
+<%- include('../partials/footer') %>

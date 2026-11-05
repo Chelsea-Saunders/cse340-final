@@ -1,0 +1,29 @@
+<%- include('../partials/header') %>
+    <main>
+        <div class="photography-photos" id="photos">
+            <div class="photography-card">
+                <% if (products && product.length) { %>
+                    <% products.forEach((product) => { %>
+                        <div class="slides">
+                            <img src="<%= product.images.large %>" alt="<%= product.alt %>">
+                            <h2><%= product.title %></h2>
+                        </div>
+                    <% }) %>
+                <% } else { %>
+                    <p>No photography items available right now.</p>
+                } %>
+            </div>
+        </div>
+        <div class="about-photography-p" id="about-photography">
+            <p id="description">Hi, I’m Chenai, the eye behind Angle Bar B 
+                Photography. For the past seven years, I’ve been capturing 
+                the heart and soul of rodeo life across Eastern Oregon. 
+                There’s something powerful about the grit, adrenaline, 
+                and tradition of the cowboy spirit — and I aim to preserve 
+                that in every crisp, storytelling shot. Through my lens, 
+                I keep those wild, unforgettable moments alive for the people
+                who live them and the ones who admire them.
+            </p>
+        </div>
+    </main>
+<%- include('../partials/footer') %>
