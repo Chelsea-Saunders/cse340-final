@@ -1,46 +1,40 @@
 <%- include('../partials/header') %>
+
     <main class="main">
-        <nav class="page-links-container">
-            <div class="main-button about-me">
-                <div class="wrapper">
-                    <a href="/about/index.ejs">
-                        <img id="bio" src="/images/about/nai.jpg" alt="Image of Chenai">
-                    </a>
-                    <p>About Me</p>
+        <section class="home-cards" aria-label="Home page sections">
+            <a href="/shop/all" class="home-card">
+                <img src="/images/shop/mr-mrs.jpg" alt="Champagne glasses with handmade leather grips">
+                <div class="home-card__content">
+                    <h2>Shop All</h2>
                 </div>
-            </div>
-            <div class="main-button shop-all">
-                <div class="wrapper"> 
-                    <a href="/shop/all.ejs">
-                        <img id="shop-all" src="/images/custom/mr-mrs.jpg" alt="Champaine Glasses with handmade leather grips">
-                    </a>
-                    <p>Shop All</p>
+            </a>
+
+            <a href="/shop/photography" class="home-card">
+                <img src="/images/photography/p4.webp" alt="Idaho Cowboy Association photography and Rodeo photography">
+                <div class="home-card__content">
+                    <h2>Photography</h2>
                 </div>
-            </div>
-            <div class="main-button photography">
-                <div class="wrapper">
-                    <a href="/shop/photography.ejs">
-                        <img id="photography" src="/images/photography/p5.webp" alt="Idaho Cowboy-Association Photography and Personal Photography Page">
-                    </a>
-                    <p>Photography</p>
+            </a>
+
+            <a href="/shop/leather" class="home-card">
+                <img src="/images/shop/c7-500.webp" alt="Leather shopping page">
+                <div class="home-card__content">
+                    <h2>Leather</h2>
                 </div>
-            </div>
-            <div class="main-button leather">
-                <div class="wrapper">
-                    <a href="/shop/leather.ejs">
-                        <img id="photography" src="/images/leather/p5.webp" alt="Just leather shopping page">
-                    </a>
-                    <p>Photography</p>
+            </a>
+
+            <a href="/shop/screen-prints" class="home-card">
+                <img src="/images/shop/201-500.webp" alt="Screen prints shopping page">
+                <div class="home-card__content">
+                    <h2>Screen Prints</h2>
                 </div>
-            </div>
-            <div class="main-button wearable">
-                <div class="wrapper">
-                    <a href="/shop/wearable.ejs">
-                        <img id="photography" src="/images/wearable/p5.webp" alt="Just wearables shopping page">
-                    </a>
-                    <p>Photography</p>
+            </a>
+            <a href="/about/index.ejs" class="home-card">
+                <img src="/images/about/nai.jpg" alt="Image of Chenai">
+                <div class="home-card__content">
+                    <h2>About Me</h2>
                 </div>
-            </div>
-        </nav>
+            </a>
+        </section>
     </main>
 <%- include('../partials/footer') %>

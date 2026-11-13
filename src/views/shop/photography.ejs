@@ -2,7 +2,7 @@
     <main>
         <div class="photography-photos" id="photos">
             <div class="photography-card">
-                <% if (products && product.length) { %>
+                <% if (products && products.length) { %>
                     <% products.forEach((product) => { %>
                         <div class="slides">
                             <img src="<%= product.images.large %>" alt="<%= product.alt %>">
@@ -11,7 +11,7 @@
                     <% }) %>
                 <% } else { %>
                     <p>No photography items available right now.</p>
-                } %>
+                <% } %>
             </div>
         </div>
         <div class="about-photography-p" id="about-photography">

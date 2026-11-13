@@ -1,4 +1,4 @@
 export const addLocalVariables = (req, res, next) => {
-    // add global template here later
+    res.locals.isLoggedIn = !!req.session?.user;
     next();
 };

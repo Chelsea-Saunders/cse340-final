@@ -3,7 +3,17 @@
     <%- include('head') %>
 <body class="<%= locals.bodyClass || '' %>">
     <header>
-        <%- include('nav') %>
+        <header class="header">
+        <a href="/">
+            <img class="logo" 
+            src="/images/extras/logo.jpg" 
+            alt="Logo">
+        </a>
+        <div class="dropdown-container">
+            <button id="close-icon" aria-label="Close menu" type="button">&times;</button>
+            <button id="hamburger-icon" aria-label="Open menu" type="button">☰</button>
+             <%- include('nav') %>
+        </div>
     </header>
     <% 
     const getFlash = locals.flash || (typeof flash === 'function' ? flash : null);

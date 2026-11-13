@@ -170,7 +170,7 @@ footer {
   .page-links-container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    /* grid-template-areas: "shop custom" "wearables leather" "about photo."; */
+    /* grid-template-areas: "shop custom" "screen-prints leather" "about photo."; */
     gap: 1rem;
   }
 }
@@ -215,7 +215,7 @@ footer {
   .page-links-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-template-areas: "about custom shop" "wearables leather photo";
+    grid-template-areas: "about custom shop" "screen-prints leather photo";
     gap: 1rem;
   }
 }

@@ -1,5 +1,12 @@
     <footer>
-        <p>&copy; <%= currentYear %> My Express App</p>
+        <div class="social">
+            <a href="https://www.instagram.com/mrs.angle.bar.b/?igsh=MTJmaHV3enNpcWZ4ZQ%3D%3D#" 
+                target="_blank"
+                rel="noopener noreferrer">
+                <img src="/images/social-media/instagram.png" alt="instagram icon">
+            </a>
+        </div>
+        <p>&copy; <%= locals.currentYear || new Date().getFullYear() %> Angle Bar B</p>
     </footer>
 </body>
 </html>
