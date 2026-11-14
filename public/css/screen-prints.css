@@ -1,15 +1,32 @@
-/* tablet screen width */
-@media (min-width: 500px) and (max-width: 900px) {
-  #wearable-list {
+h1 {
+  text-align: center;
+}
+.screen-prints {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2rem;
+  justify-items: center;
+
+  .screen-prints-card {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
+    padding: 1rem;
+    /* justify-items: center; */
+  }
+
+  img {
+    width: clamp(200px, 100%, 500px);
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 5px 5px 10px #6f7364;
+    cursor: pointer;
+    border: 3px solid #e6cdb4;
   }
 }
-@media (min-width: 901px) {
-  #wearable-list {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-  }
+
+h3 {
+  font-weight: 350;
+}
+
+.price {
+  text-align: left;
 }
