@@ -14,6 +14,31 @@
   margin: 0 auto;
 }
 
+.cart-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  text-decoration: none;
+  color: black;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+  &:hover {
+    color: navy;
+    transform: scale(1.5);
+  }
+}
+.cart-badge {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: black;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  
+  &:hover {
+    color: rgb(135, 35, 35);
+    transform: scale(1.5);
+  }
+}
+
 /* DROPDOWN IN HEADER */
 .dropdown-container {
   display: flex;

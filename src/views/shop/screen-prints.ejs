@@ -4,18 +4,20 @@
 <div class="screen-prints" id="screen-prints">
     <% products.forEach((product) => { %>
         <figure class="screen-prints-card">
-            <img 
-                src="<%= product.image_sm %>"
-                srcset="
-                    <%= product.image_sm %> 250w,
-                    <%= product.image_med %> 400w,
-                    <%= product.image_lg %> 500w
-                "
-                sizes="(max-width: 700px) 90vw, 400px"
-                alt="<%= product.alt %>"
-                loading="lazy"
-                decoding="async"
-            >
+            <a href="/shop/item/<%= product.id %>">
+                <img 
+                    src="<%= product.image_sm %>"
+                    srcset="
+                        <%= product.image_sm %> 250w,
+                        <%= product.image_med %> 400w,
+                        <%= product.image_lg %> 500w
+                    "
+                    sizes="(max-width: 700px) 90vw, 400px"
+                    alt="<%= product.alt %>"
+                    loading="lazy"
+                    decoding="async"
+                >
+            </a>
             <figcaption class="product-info">
                 <h3><%= product.name %></h3>
                 <p class="price">$<%= product.price %></p>
