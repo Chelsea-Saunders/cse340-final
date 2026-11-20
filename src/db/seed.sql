@@ -219,15 +219,15 @@ values
 	'/images/shop/13-800.webp',
 	'/images/shop/13-1200.webp'
 	),
-	('Bucking Bronc', 
+	('Bucking Bronc Print', 
 	'photography', 
 	'Rodeo photography: bucking bronc',
-	50.00,
+	60.00,
 	'/images/photography/p1.webp',
     '/images/photography/p1.webp',
     '/images/photography/p1.webp'
 	),
-	('Leaping Bucking Bronc', 
+	('Leaping Bronc Print', 
 	'photography', 
 	'Rodeo photography: leaping bucking bronc',
 	50.00,
@@ -235,7 +235,7 @@ values
     '/images/photography/p2.webp',
     '/images/photography/p2.webp'
 	),
-	('Falling off Bronc', 
+	('Falling off Bronc Print', 
 	'photography', 
 	'Rodeo photography: Falling off bucking bronc',
 	50.00,
@@ -243,7 +243,7 @@ values
     '/images/photography/p3.webp',
     '/images/photography/p3.webp'
 	),
-	('Flying Bronc', 
+	('Flying Bronc Print', 
 	'photography', 
 	'Rodeo photography: Flying bronc',
 	50.00,
@@ -251,7 +251,7 @@ values
     '/images/photography/p4.webp',
     '/images/photography/p4.webp'
 	),
-	('Clown on Bronc', 
+	('Clown on Bronc Print', 
 	'photography', 
 	'Rodeo photography: clown on bronc',
 	50.00,
@@ -259,7 +259,7 @@ values
     '/images/photography/p5.webp',
     '/images/photography/p5.webp'
 	),
-	('Roping Calf', 
+	('Roping Calf Print', 
 	'photography', 
 	'Roping: calf',
 	50.00,
@@ -267,7 +267,7 @@ values
     '/images/photography/p6.webp',
     '/images/photography/p6.webp'
 	),
-	('Rodeo Bronc', 
+	('Rodeo Bronc Print', 
 	'photography', 
 	'Catching a breakaway bronc',
 	50.00,
@@ -275,7 +275,7 @@ values
     '/images/photography/p7.webp',
     '/images/photography/p7.webp'
 	),
-	('Rodeo Bronc Two', 
+	('Rodeo Bronc 2 Print', 
 	'photography', 
 	'Catching a breakaway bronc',
 	50.00,

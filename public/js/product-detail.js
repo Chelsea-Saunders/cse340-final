@@ -5,24 +5,28 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!detailRoot) return;
 
     const addButton = detailRoot.querySelector('[data-add-to-cart]');
-    const quantityInput = detailRoot.querySelector('[data-uantity]');
     const message = detailRoot.querySelector('[data-cart-message]');
+    const quantityInput = detailRoot.querySelector('#quantity');
+    const productId = Number(detailRoot.dataset.productId);
+    const productName = detailRoot.dataset.productName;
 
     if (!addButton) return;
 
-    addButton.addEventListener('click', () => {
-        const quantity = Math.max(1, Number(quantityInput?.value || 1));
+    addButton.addEventListener('click', async () => {
+        const quantity = Number(quantityInput.value);
 
-        const product = {
-            id: detailRoot.dataset.productId, 
-            name: detailRoot.dataset.productName, 
-            price: Number(detailRoot.dataset.productPrice),
-            image: detailRoot.dataset.productImage,
-        };
-        addToCart(product, quantity);
+        addButton.disabled = true;
 
-        if (message) {
-            message.textContent = `${product.name} added to cart.`;
+        try {
+            await addToCart({id: productId }, quantity);
+            message.textContent = `${productName} added to cart!`;
+
+        } catch (err) {
+            console.error('Unable to add item to cart', err);
+            message.textContent = `Unable to add ${productName} to cart`;
+
+        } finally {
+            addButton.disabled = false;
         }
     });
 });

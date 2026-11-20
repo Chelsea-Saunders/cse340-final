@@ -1,7 +1,12 @@
-/* HEADER */
-.header {
-  justify-content: center;
-  align-items: center;
+
+@media (width < 901px) {
+  .header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.7rem;
+  }
 }
 
 .logo {
@@ -53,17 +58,12 @@
   font-size: 2rem;
   cursor: pointer;
   margin: 0 auto;
-  /* display: block;
-  margin: 0 auto;
-  width: 15%;
-  padding: 20px;
-  font-family: 'Antonio', sans-serif;
-  font-size: 1em;
-  justify-self: center;
-  align-self: center;
-  border-radius: 125%; */
+  transition: transform 0.3s ease-in-out;
 }
 
+#hamburger-icon {
+  display: block;
+}
 #close-icon {
   display: none;
 }
@@ -74,44 +74,39 @@
 
 .dropdown-container.open #close-icon {
   display: block;
-}
+} 
 
 #hamburger-icon:hover,
 #close-icon:hover {
   transform: scale(1.3) translateY(-1px);
-  transition: transform 0.3s ease-in-out;
-  cursor: pointer;
   color: #73796d;
 }
 
 #dropdown-links {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  width: 175px;
+  display: none;
+  width: 200px;
   text-align: center;
-  align-self: center;
-  justify-self: center;
   background-color: white;
   border: 1px solid #ccc;
   padding: 10px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  opacity: 0;
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease, opacity 0.2s ease;
-  cursor: pointer;
   margin: 0 auto;
-  pointer-events: none; /* pprevents clicking when hidden */
 }
 
 #dropdown-links.show {
-  opacity: 1;
-  max-height: 500px;
-  pointer-events: auto;
+  display: block;
+}
+
+#dropdown-links ul {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 #dropdown-links a {
+  display: block;
   text-decoration: none;
   color: black;
   padding: 8px 0;
@@ -121,13 +116,9 @@
   background-color: #f0f0f0;
   color: #333;
 }
-
-#toggle-theme button {
-  background-color: #5a5a5a;
-  color: #f1f1f1;
-  border-radius: 5px;
-  padding: 0.25px 0.5px;
-}
+.cart-link {
+    flex-shrink: 0;
+  }
 
 /* .login-button {
   background-color: #6f7364;
@@ -180,67 +171,73 @@ footer {
 }
 
 /* tablet screen width */
-@media (min-width: 500px) and (max-width: 900px) {
+@media (min-width: 500px) {
   .header {
     margin-bottom: 30px;
-  }
-  .logo {
-    width: 300px;
-    margin: 0 auto;
-  }
-  img.dropdown-toggle {
-    width: 8%;
-    padding: 10px;
-  }
-  .page-links-container {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    /* grid-template-areas: "shop custom" "screen-prints leather" "about photo."; */
-    gap: 1rem;
-  }
-}
-/* Large screen width */
-@media (min-width: 901px) {
-  .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 1rem;
+    gap: 1rem;
   }
-  img.dropdown-toggle {
-    display: none;
+  .logo {
+    width: 200px;
+    margin: 0 auto;
+  }
+}
+/* Large screen width */
+@media (min-width: 901px) {
+
+  .header > a:first-child {
+    order: 1;
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    gap: 1rem;
   }
   .logo {
     width: 200px;
     margin: 0;
   }
-  .dropdown-container {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
+  #hamburger-icon, 
+  #close-icon, 
+  .dropdown-container.open #hamburger-icon, 
+  .dropdwon-container.open #close-icon {
+    display: none;
   }
-  .dropdown-links {
-    display: flex;
-    flex-direction: row;
-    gap: 1.5rem;
-    /* background-color: transparent; */
-    opacity: 1;
-    max-height: none;
+  .dropdown-container {
+    order: 2;
+    flex: 1;
+    min-width: 0;
+    align-items: center;
+    justify-content: center;
+  }
+  #dropdown-links,
+  #dropdown-links.show {
+    display: block;
+    width: 100%;
+    background-color: transparent;
     border: none;
     box-shadow: none;
     padding: 0;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    width: 100%;
+    margin: 0;    
+  }
+  #dropdown-links ul {
+    display: flex; 
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
   }
   .dropdown-links a {
     font-size: 0.9rem;
-    flex: 0 0 auto;
+    padding: 5px 0;
   }
-  .page-links-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-areas: "about custom shop" "screen-prints leather photo";
-    gap: 1rem;
+  .cart-link {
+    order: 3;
+    flex-shrink: 0;
   }
 }

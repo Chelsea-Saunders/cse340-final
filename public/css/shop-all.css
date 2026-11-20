@@ -18,7 +18,7 @@
   border-radius: 10px;
   box-shadow: 5px 5px 10px #6f7364;
   cursor: pointer;
-  border: 3px solid #e6cdb4;
+  border: 3px solid #8994876e;
 }
 
 .gallery img:hover {
@@ -54,11 +54,11 @@ h3 {
 /* add to cart button */
 .submit-button {
   font-family: "Roboto", sans-serif;
-  background-color: #e6cdb4;
+  background-color: #8994876e;
   font-size: 0.7rem;
   padding: 5px 10px;
   border-radius: 15px;
-  border: 2px solid #cdbea3;
+  border: 2px solid #8994879c;
   cursor: pointer;
   width: 50%;
   align-self: center;
@@ -67,7 +67,7 @@ h3 {
 }
 
 .submit-button:hover {
-  background-color: #c9bda2;
+  background-color: #7a95769c;
   transform: scale(1.1);
   transition: transform 0.3s ease;
 }

@@ -4,12 +4,14 @@ import { fileURLToPath } from 'url'
 import path from 'path';
 import session from 'express-session';
 import connectPgSimple from 'connect-pg-simple';
-import pool from './src/models/db.js';
+import pool from './src/db/pgSQL.js';
 
 import routesIndex from './src/routes/routes-index.js';
 import routesAbout from './src/routes/aboutRoutes.js';
 import routesDashboard from './src/routes/dashboardRoutes.js';
 import routesShop from './src/routes/shopRoutes.js';
+import cartRoutes from './src/routes/cartRoutes.js';
+import { addCartLocals } from './src/middleware/cartMiddleware.js';
 import { addLocalVariables } from './src/middleware/global.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -28,14 +30,6 @@ app.set('views', path.join(__dirname, 'src', 'views'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// GLOBAL MIDDLEWARE
-app.use(addLocalVariables);
-app.use((req, res, next) => {
-    res.locals.isLoggedIn = req.session?.isLoggedIn || false;
-    res.locals.NODE_ENV = NODE_ENV;
-    res.locals.currentYear = new Date().getFullYear();
-    next();
-});
 app.use(session({
     store: new PgSession({
         pool: pool,
@@ -47,11 +41,22 @@ app.use(session({
     cookie: { maxAge: 1000 * 60 * 60 * 24 }
 }));
 
+// GLOBAL MIDDLEWARE
+app.use(addLocalVariables);
+app.use(addCartLocals);
+app.use((req, res, next) => {
+    res.locals.isLoggedIn = req.session?.isLoggedIn || false;
+    res.locals.NODE_ENV = NODE_ENV;
+    res.locals.currentYear = new Date().getFullYear();
+    next();
+});
+
 // ROUTER
 app.use('/', routesIndex);
 app.use('/shop', routesShop);
 app.use('/about', routesAbout);
 app.use('/dashboard', routesDashboard);
+app.use('/cart', cartRoutes);
 
 // 404's
 app.use((req, res, next) => {
@@ -62,7 +67,7 @@ app.use((req, res, next) => {
 
 // GLOBAL ERROR HANDLING
 app.use((err, req, res, next) => {
-    if (res.headerSent) {
+    if (res.headersSent) {
         return next(err)
     }
 

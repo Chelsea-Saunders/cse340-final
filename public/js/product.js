@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     cards.forEach((card) => {
         card.addEventListener('click', (e) => {
-            if (e.targt.closest('button, a')) return;
+            if (e.target.closest('button, a')) return;
 
             selectCard(card);
         });

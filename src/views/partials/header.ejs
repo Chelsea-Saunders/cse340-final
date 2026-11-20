@@ -2,42 +2,67 @@
 <html lang="en">
     <%- include('head') %>
 <body class="<%= locals.bodyClass || '' %>">
-    <header>
-        <header class="header">
+
+    <header class="header">
+
         <a href="/">
             <img class="logo" 
             src="/images/extras/logo.jpg" 
             alt="Logo">
         </a>
+
         <a href="/cart" class="cart-link" aria-label="shopping cart">
-             <svg smlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+             <svg xmlns="http://www.w3.org/2000/svg" 
+                width="24" 
+                height="24" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                stroke="currentColor" 
+                stroke-width="2" 
+                stroke-linecap="round" 
+                stroke-linejoin="round" 
+                aria-hidden="true">
+
                 <circle cx="9" cy="21" r="1"></circle>
                 <circle cx="20" cy="21" r="1"></circle>
                 <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
              </svg>
-            <span class="cart-badge" data-cart-count>0</span>
+
+            <span class="cart-badge" data-cart-count>
+                <%= locals.cartCount || 0 %>
+            </span>
         </a>
+
         <div class="dropdown-container">
-            <button id="close-icon" aria-label="Close menu" type="button">&times;</button>
-            <button id="hamburger-icon" aria-label="Open menu" type="button">☰</button>
+
+            <button id="hamburger-icon" 
+                aria-label="Open menu" 
+                aria-controls="dropdown-links"
+                aria-expanded="false"
+                type="button">☰</button>
+
+            <button id="close-icon" 
+                aria-label="Close menu"
+                aria-controls="dropdown-links"
+                type="button">&times;</button>
+
              <%- include('nav') %>
         </div>
         
     </header>
     <% 
-    const getFlash = locals.flash || (typeof flash === 'function' ? flash : null);
-    const messages = getFlash ? getFlash() : { success: [], error: [], warning: [], info: [] };
-    const hasMessage = Object.values(messages).some(arr => arr.length > 0);
+        const getFlash = locals.flash || (typeof flash === 'function' ? flash : null);
+        const messages = getFlash ? getFlash() : { success: [], error: [], warning: [], info: [] };
+        const hasMessage = Object.values(messages).some(arr => arr.length > 0);
     %>
-        <% if (hasMessage) { %>
-            <div class="flash-messages">
-                <% Object.keys(messages).forEach(type => { %>
-                    <% (messages[type] || []).forEach(message => { %>
-                        <div class="flash <%= type %>">
-                            <%= message %>
-                        </div> 
-                    <% }); %>
+    <% if (hasMessage) { %>
+        <div class="flash-messages">
+            <% Object.keys(messages).forEach(type => { %>
+                <% (messages[type] || []).forEach(message => { %>
+                    <div class="flash <%= type %>">
+                        <%= message %>
+                    </div> 
                 <% }); %>
-            </div>
-        <% } %>
-</body>
+            <% }); %>
+        </div>
+    <% } %>

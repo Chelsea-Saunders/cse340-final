@@ -1,13 +1,24 @@
 <%- include('../partials/header') %>
 
 <h1>Your Cart</h1>
-<p data-cart-empyt hidden>Your cart is empty.</p>
+<p data-cart-empty hidden>Your cart is empty.</p>
+
+<p data-cart-error role="alert" hidden></p>
 
 <div data-cart-items></div>
 
 <div class="cart-summary">
-    <p>Total: <strong data-cart-total>$0.00</strong></p>
-    <button type="button" data-clear-cart>Clear Cart</button>
+    <p>
+        Total: 
+        <strong data-cart-total>$0.00</strong>
+    </p>
+    
+    <button type="button" data-clear-cart hidden>
+        Clear Cart
+    </button>
 </div>
+<a href="/shop" class="continue-shopping">
+    Continue Shopping
+</a>
 
 <%- include('../partials/footer') %>
