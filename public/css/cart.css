@@ -70,9 +70,15 @@
     font-size: clamp(1.2rem, 2.5vw, 1.5rem);
     font-weight: 700;
 }
+.checkout-button {
+    color:#000;
+    padding: 0.25rem 0.6rem !important;
+    text-decoration: none;
+}
 /* individual control buttons / clear cart button */
 .cart-item-controls button,
-[data-clear-cart] {
+[data-clear-cart],
+.checkout-button {
     background-color: #8994876e;
     padding: 0.3rem;
     border-radius: 5px;
@@ -83,12 +89,14 @@
     transition: background-color 0.2s ease;
 }
 .cart-item-controls button:hover,
-[data-clear-cart]:hover {
+[data-clear-cart]:hover,
+.checkout-button:hover {
     background-color: #7a95769c;
     transform: scale(1.1);
 }
 .cart-item-controls button:focus-visible,
-[data-clear-cart]:focus-visible {
+[data-clear-cart]:focus-visible
+.checkout-button:focus-visible {
     outline: 2px solid #596656;
     outline-offset: 3px;
 }

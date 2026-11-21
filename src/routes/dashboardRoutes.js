@@ -10,7 +10,7 @@ import {
 } from '../controllers/dashboardController.js';
 
 
-import { requireLogin } from '../middleware/auth.js';
+import { requireLogin } from '../middleware/authMiddleware.js';
 const router = Router();
 
 router.use(requireLogin);

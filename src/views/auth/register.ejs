@@ -1,29 +1,92 @@
 <%- include('../partials/header') %>
 
-<form method="POST" action="register.ejs" novalidate>
+<h1><%= title %></h1>
+
+<form method="POST" action="/auth/register" class="form-card">
+    <!-- validation errors -->
     <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
-        <div class="error-summary">
+
+        <div class="error-summary" role="alert">
             <h3>Please correct the following errors: </h3>
             <ul>
                 <% errors.forEach(error => { %>
-                <li<l%= error.msg %></li>
+                <li><%= error.msg %></li>
             <% }); %>
             </ul>
         </div>
     <% } %>
 
-    <div>
-        <label for="email">Email: </label>
-        <input type="email" id="email" name="email"
-            value="<%= typeof formDate !== 'undefined' > formDate.email || '' : '' %>">
+    <!-- name -->
+     <div class="form-group">
+        <label for="register-name">Name</label>
+
+        <input 
+            type="text"
+            id="register-name"
+            name="name"
+            autocomplete="name"
+            value="<%= typeof formData !== 'undefined' ? formData.name || '' : '' %>"
+            placeholder="Enter your full name"
+            required
+        >
+     </div>
+
+     <!-- email -->
+    <div class="form-group">
+        <label for="register-email">Email: </label>
+
+        <input 
+            type="email" 
+            id="register-email" 
+            name="email"
+            autocomplete="email"
+            value="<%= typeof formData !== 'undefined' ? formData.email || '' : '' %>"
+            placeholder="Enter your email address"
+            required
+        >
     </div>
 
-    <div>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password">
+    <!-- password -->
+    <div class="form-group">
+        <label for="register-password">Password:</label>
+
+        <input 
+            type="password" 
+            id="register-password" 
+            name="password"
+            autocomplete="new-password"
+            minlength="15"
+            placeholder="Create a password"
+            required
+        >
+        <br><small>Password must be at least 15 characters.</small>
     </div>
 
-    <button type="submit">Register</button>
+    <!-- confirm password -->
+    <div class="form-group">
+        <label for="confirm-password">Confirm Password</label>
+
+        <input 
+            type="password"
+            id="confirm-password"
+            name="confirmPassword"
+            autocomplete="new-password"
+            placeholder="Confirm your password"
+            required
+        >
+    </div>
+
+    <!-- submit button -->
+     <div class="submit-card">
+        <button type="submit" class="register-button button">Register</button>
+     </div>
+
+    <div class="form-footer">
+        <p>
+            Already have an account? 
+            <a href="/auth/login">Login here</a>
+        </p>
+    </div>
 </form>
 
 <%- include('../partials/footer') %>

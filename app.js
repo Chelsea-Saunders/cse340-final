@@ -11,6 +11,8 @@ import routesAbout from './src/routes/aboutRoutes.js';
 import routesDashboard from './src/routes/dashboardRoutes.js';
 import routesShop from './src/routes/shopRoutes.js';
 import cartRoutes from './src/routes/cartRoutes.js';
+import authRoutes from './src/routes/authRoutes.js';
+import checkoutRoutes from './src/routes/checkoutRoutes.js';
 import { addCartLocals } from './src/middleware/cartMiddleware.js';
 import { addLocalVariables } from './src/middleware/global.js';
 
@@ -45,9 +47,15 @@ app.use(session({
 app.use(addLocalVariables);
 app.use(addCartLocals);
 app.use((req, res, next) => {
-    res.locals.isLoggedIn = req.session?.isLoggedIn || false;
+    res.locals.isLoggedIn = Boolean(req.session?.user);
+    res.locals.isAdmin = req.session?.user?.role === 'admin';
+    res.locals.currentUser = req.session?.user || null;
     res.locals.NODE_ENV = NODE_ENV;
     res.locals.currentYear = new Date().getFullYear();
+
+    console.log('Session user:', req.session?.user);
+    console.log('logged in:', res.locals.isLoggedIn);
+
     next();
 });
 
@@ -57,6 +65,8 @@ app.use('/shop', routesShop);
 app.use('/about', routesAbout);
 app.use('/dashboard', routesDashboard);
 app.use('/cart', cartRoutes);
+app.use('/auth', authRoutes);
+app.use('/checkout', checkoutRoutes);
 
 // 404's
 app.use((req, res, next) => {

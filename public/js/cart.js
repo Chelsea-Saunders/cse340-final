@@ -90,6 +90,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const emptyMessage = document.querySelector('[data-cart-empty]');
     const clearButton = document.querySelector('[data-clear-cart]');
     const errorMessage = document.querySelector('[data-cart-error]');
+    const checkoutButton = document.querySelector('[data-checkout]');
 
     let currentCart = {
         items: [],
@@ -125,6 +126,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (clearButton) {
             clearButton.disabled = updating;
         }
+
+        if (checkoutButton) {
+            checkoutButton.style.pointerEvents = updating ? 'none' : '';
+            checkoutButton.setAttribute(
+                'aria-disabled',
+                String(updating)
+            );
+        }
     }
     
     function renderCart(cart) {
@@ -150,6 +159,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         // update clear cart button
         if(clearButton) {
             clearButton.hidden = isEmpty;
+        }
+
+        // show checkout button only when items are in cart
+        if (checkoutButton) {
+            checkoutButton.hidden = isEmpty;
         }
 
         // create and display product cards
