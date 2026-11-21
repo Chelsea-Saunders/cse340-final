@@ -1,0 +1,33 @@
+<%- include('../partials/header') %>
+
+<main class="order-confirmation">
+    <h1>Order Placed Successfully!</h1>
+
+    <p>Thank you for shopping with Angle Bar B!</p>
+
+    <p>
+        <strong>Order Number:</strong>
+        #<%= order.id %>
+    </p>
+
+    <p>
+        <strong>Order Total:</strong>
+        $<%= Number(order.total).toFixed(2) %>
+    </p>
+
+    <p>
+        <strong>Order Status:</strong>
+        <%= order.status %>
+    </p>
+
+    <p>
+        <strong>Order Date:</strong>
+        <%= new Date(order.created_at).toLocaleDateString() %>
+    </p>
+
+    <a href="/shop" class="continue-shopping">
+        Continue Shopping
+    </a>
+</main>
+
+<%- include('../partials/footer') %>
