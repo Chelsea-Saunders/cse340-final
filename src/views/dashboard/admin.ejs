@@ -1,0 +1,46 @@
+<%- include('../partials/header') %>
+
+<main class="account-dashboard-page admin-dashboard">
+    <h1><%= title %></h1>
+
+    <p class="welcome-p">Welcome, <%= user.name %></p>
+
+    <section class="account-dashboard">
+        <div class="account-card">
+            <h2>Product Management</h2>
+            <p>Add, edit, remove products</p>
+            <a href="/dashboard/add">Manage Products</a>
+        </div>
+
+        <div class="account-card">
+            <h2>Employee Management</h2>
+            <p>Manage employee accounts and permissions</p>
+            <p>Coming Soon!</p>
+        </div>
+
+        <div class="account-card">
+            <h2>Store Overview</h2>
+            <p>View store activity and orders</p>
+            <p>Coming Soon!</p>
+        </div>
+
+        <div class="account-card">
+            <h2>Order Management</h2>
+            <p>View and manage customer orders</p>
+            <p>Coming Soon!</p>
+        </div>
+
+        <div class="account-card">
+            <h2>Inventory</h2>
+            <p>View product inventory and availability</p>
+            <p>Coming Soon!</p>
+        </div>
+
+    </section>
+
+    <a href="/dashboard" class="continue-shopping">
+        Back to My Account
+    </a>
+</main>
+
+<%- include('../partials/footer') %>

@@ -98,7 +98,7 @@ export const showConfirmation = async (req, res, next) => {
         const orderId = Number(req.params.orderId);
 
         if (!Number.isInteger(orderId) || orderId < 1) {
-            return res.status(40).send('Order not found');
+            return res.status(404).send('Order not found');
         }
 
         const order = await orderModel.getOrderById(
@@ -116,6 +116,33 @@ export const showConfirmation = async (req, res, next) => {
         });
     } catch (err) {
         console.error('Confirmation error:', err);
+        next(err);
+    }
+};
+
+export const showMyOrders = async (req, res, next) => {
+    try {
+        const userId = req.session.user.id;
+
+        const orders = await orderModel.getOrderByUserId(userId);
+
+        const orderWithItems = await Promise.all(
+            orders.map(async (order) => {
+                const items = await orderModel.getOrderItems(order.id);
+
+                return {
+                    ...order, 
+                    items
+                };
+            })
+        );
+
+        res.render('checkout/my-orders', {
+            title: 'My Orders', 
+            orders: orderWithItems
+        });
+    } catch (err) {
+        console.error('My orders errof:', err);
         next(err);
     }
 };

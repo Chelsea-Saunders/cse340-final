@@ -8,11 +8,11 @@ import pool from './src/db/pgSQL.js';
 
 import routesIndex from './src/routes/routes-index.js';
 import routesAbout from './src/routes/aboutRoutes.js';
-import routesDashboard from './src/routes/dashboardRoutes.js';
 import routesShop from './src/routes/shopRoutes.js';
 import cartRoutes from './src/routes/cartRoutes.js';
 import authRoutes from './src/routes/authRoutes.js';
 import checkoutRoutes from './src/routes/checkoutRoutes.js';
+import dashboardRoutes from './src/routes/dashboardRoutes.js';
 import { addCartLocals } from './src/middleware/cartMiddleware.js';
 import { addLocalVariables } from './src/middleware/global.js';
 
@@ -63,10 +63,10 @@ app.use((req, res, next) => {
 app.use('/', routesIndex);
 app.use('/shop', routesShop);
 app.use('/about', routesAbout);
-app.use('/dashboard', routesDashboard);
 app.use('/cart', cartRoutes);
 app.use('/auth', authRoutes);
 app.use('/checkout', checkoutRoutes);
+app.use('/dashboard', dashboardRoutes);
 
 // 404's
 app.use((req, res, next) => {

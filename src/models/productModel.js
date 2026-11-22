@@ -29,7 +29,7 @@ export const createProduct = async ({
             image_med,
             image_lg
             )
-        VALUES ($1, $2, $3, $4, $5)
+        VALUES ($1, $2, $3, $4, $5, $6, $7)
         RETURNING *`, 
         [
             name, 

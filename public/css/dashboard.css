@@ -1,0 +1,187 @@
+
+/* customer dashboard */
+.account-dashboard {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+    margin: 2rem auto;
+    max-width: 1000px;
+}
+.welcome-p {
+    text-align: center;
+}
+.account-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    flex: 1 1 240px;
+    max-width: 320px;
+    box-sizing: border-box;
+    background-color: #eaefe76a;
+    border: 1px solid #fff;
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.169);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.account-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
+}
+.account-card h2 {
+    margin: 0 0 1rem;
+    font-size: 1.1rem;
+}
+.account-card p {
+    margin-bottom: 1.5rem;
+}
+a.account-card {
+    display: block; 
+    text-decoration: none;
+    color: inherit;
+}
+a.account-card:focus-visible {
+    outline: 2px solid #596656;
+    outline-offset: 4px;
+}
+
+ /* profile page */
+.profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    width: clamp(280px, 70%, 550px);
+    max-width: 100%;
+    box-sizing: border-box;
+    margin: 2rem auto;
+    padding: clamp(1rem, 3vw, 2rem);
+    background-color: #eaefe76a;
+    border: 1px solid #fff;
+    border-radius: 16px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.169);
+}
+.profile-form label {
+    font-weight: 500;
+    margin-top: 0.5rem;
+}
+.profile-form input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.75rem;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+}
+.profile-form input[readonly] {
+    background-color: #f4f4f4;
+    color: #596656;
+}
+.profile-form button {
+    align-self: flex-end;
+    background-color: #8994876e;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    border: 0.5px solid #8994879c;
+    font-weight: 500;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+.profile-form button:hover {
+    background-color: #7a95769c;
+}
+
+.profile-form button:focus-visible,
+.profile-form input:focus-visible {
+    outline: 2px solid #596656;
+    outline-offset: 3px;
+}
+.profile-success {
+    text-align: center;
+    color: #596656;
+    font-weight: 600;
+}
+.security-message {
+    max-width: 550px;
+    margin: 2rem auto;
+}
+.security-message a {
+    color: #596656;
+    font-weight: 600;
+}
+.security-message a:hover {
+    text-decoration: underline;
+}
+/* employee dashboard */
+.employee-dashboard .account-card {
+    min-height: 170px;
+}
+
+/* add product admin page */
+.dashboard-edit {
+    max-width: 750px;
+    margin: 2rem auto;
+    padding: 1rem;
+}
+.dashboard-edit h1 {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+.dashboard-edit form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: clamp(1rem, 3vw, 2rem);
+    background-color: #eaefe76a;
+    border: 1px solid #fff;
+    border-radius: 16px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.169);
+}
+.dashboard-edit label {
+    font-weight: 500;
+    margin-top: 0.5rem;
+}
+.dashboard-edit input, 
+.dashboard-edit textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.75rem;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+}
+.dashboard-edit textarea {
+    min-height: 130px;
+    resize: vertical;
+}
+.dashboard-edit button {
+    align-self: flex-end;
+    background-color: #8994876e;
+    padding: 0.75rem 1.25rem;
+    border-radius: 5px;
+    border: 1px solid #8994879c;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+.dashboard-edit button:hover {
+    background-color: #7a95769c;
+}
+.dashboard-edit input:focus-visible,
+.dashboard-edit textarea:focus-visible,
+.dashboard-edit button:focus-visible {
+    outline: 2px solid #596656;
+    outline-offset: 3px;
+}
+/* image upload layout */
+.dashboard-edit input[type="file"] {
+    background-color: #fff;
+    cursor: pointer;
+}
+.product-image-preview {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+    border-radius: 8px;
+    background-color: #fff;
+    padding: 0.5rem;
+}

@@ -16,6 +16,7 @@
     "express-session": "^1.19.0",
     "mongodb": "^7.8.0",
     "mongoose": "^9.11.4",
+    "multer": "^2.5.0",
     "openid-client": "^6.9.1",
     "pg": "^8.23.1"
   },

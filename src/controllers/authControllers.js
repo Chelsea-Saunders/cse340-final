@@ -151,7 +151,7 @@ export const login = async (req, res, next) => {
 
         const user = await userModel.getUserByEmail(cleanEmail);
 
-        const passwordMatches = user 
+        const passwordMatches = user?.password_hash
             ? await bcrypt.compare(password, user.password_hash)
             : false;
         
@@ -339,19 +339,3 @@ export const googleCallback = async (req, res, next) => {
         next(err);
     }
 };
-
-// refresh token (POST /auth/refresh)
-
-// get current usser / me (GET /auth/me)
-
-// get user by id (GET /auth/users/:id)
-
-// forgot password (POST /auth/forgot-password)
-
-// reset password (POST /auth/reset-password)
-
-// verify email /resend verification
-
-// change password
-
-// oauth callback / google login

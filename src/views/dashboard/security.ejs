@@ -1,0 +1,85 @@
+<%- include('../partials/header') %>
+
+<main class="account-dashboard-page">
+    <h1><%= title %></h1>
+
+    <% if (updated) { %>
+        <p class="profile-success" role="status">
+            Your password has been updated successfully!
+        </p>
+    <% } %>
+
+    <% if (hasPassword) {%>
+    <form 
+        action="/dashboard/security"
+        method="POST"
+        class="profile-form"
+    >
+        <label for="currentPassword">
+            Current Password
+        </label>
+        <input 
+            type="password"
+            id="currentPassword"
+            name="currentPassword"
+            autocomplete="current-password"
+            required
+        >
+
+        <label for="newPassword">
+            New Password
+        </label>
+        <input 
+            type="password"
+            id="newPassword"
+            name="newPassword"
+            autocomplete="newPassword"
+            minlength="12"
+            required
+        >
+
+        <label for="confirmPassword">
+            Confirm Password
+        </label>
+        <input
+            type="password"
+            id="confirmPassword"
+            name="confirmPassword"
+            autocomplete="new-password"
+            minlength="12"
+            required
+        >
+
+        <button type="submit">
+            Change Password
+        </button>
+    </form>
+    <% } else { %>
+        <section class="account-card security-message">
+            <h2>Google Sign-In</h2>
+
+            <p>
+                Your account does not have a local password.
+                You sign in using Google.
+            </p>
+
+            <p>
+                To manage your Google password, visit your Google Account settings.
+            </p>
+
+            <a 
+                href="https://myaccount.google.com/security"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+            Google Account Security
+            </a>
+        </section>
+    <% } %>
+    
+    <a href="/dashboard" class="continue-shopping">
+        Back to My Account
+    </a>
+</main>
+
+<%- include('../partials/footer') %>

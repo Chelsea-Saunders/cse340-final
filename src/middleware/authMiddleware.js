@@ -18,3 +18,16 @@ export const requireAdmin = (req, res, next) => {
     }
     return next();
 }
+
+export const requireEmployee = (req, res, next) => {
+    if(!req.session?.user) {
+        return res.redirect('/auth/login');
+    }
+
+    const role = req.session.user.role;
+
+    if(role !== 'employee' && role !== 'admin') {
+        return res.status(403).send('Access denied');
+    }
+    next();
+};

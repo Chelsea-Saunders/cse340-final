@@ -65,11 +65,49 @@ export const createOrder = async (order, items) => {
 // check order id and user to prevent customer from viewing anyone else's order
 export const getOrderById = async (orderId, userId) => {
     const result = await pool.query(
-        `SELECT id, full_name, total, status, created_at
+        `SELECT 
+            id,  
+            total, 
+            status, 
+            created_at
         FROM orders
-        WHERE id = $1 AND user_id = $2`,
-        [orderId, userId]
+        WHERE user_id = $1
+        ORDER BY created_at DESC, id DESC`,
+        [userId]
     );
 
     return result.rows[0] || null;
+};
+
+// get customers orders
+export const getOrderByUserId = async (userId) => {
+    const result = await pool.query(
+        `SELECT
+            id, 
+            total,
+            status,
+            created_at
+        FROM orders
+        WHERE user_id = $1
+        ORDER BY created_at DESC, id DESC`,
+        [userId]
+    );
+
+    return result.rows;
+};
+
+// retrieve order items
+export const getOrderItems = async (orderId) => {
+    const result = await pool.query(
+        `SELECT 
+            product_name,
+            quantity,
+            unit_price
+        FROM order_items
+        WHERE order_id = $1
+        ORDER BY id`,
+        [orderId]
+    );
+
+    return result.rows;
 };

@@ -126,3 +126,100 @@
         justify-content: center;
     }
 }
+
+/* Checkout and My Orders page */
+.checkout-page, 
+.my-orders-page {
+    width: clamp(280px, 70%, 750px);
+    max-width: 90%;
+    box-sizing: border-box;
+    margin: clamp(1rem, 3vw, 2rem) auto;
+    padding: 0 clamp(1rem, 3vw, 2rem);
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.75rem, 2vw, 1.5rem);
+}
+/* Checkout shipping form and order cards */
+.checkout-form, 
+.order-card, 
+.order-confirmation {
+    border-top: 2px solid lightgray;
+    border-bottom: 2px solid lightgray;
+    padding: clamp(1rem, 3vw, 2rem) 0;
+    margin: clamp(1rem, 3vw, 2rem) 0;
+}
+
+/* checkout form */
+.checkout-form,
+.order-confirmation {
+    width: clamp(280px, 70%, 750px);
+    max-width: 90%;
+    box-sizing: border-box;
+    margin: 2rem auto;
+    display: flex;
+    flex-direction: column;
+    /* gap: clamp(0.75rem, 2vw, 1.2rem); */
+}
+.p {
+    text-align: center !important;
+    padding: 0;
+    margin: 0;
+}
+.checkout-form label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    font-weight: 500;
+}
+.checkout-form input {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+}
+.checkout-form input:focus-visible {
+    outline: 2px solid #596656;
+    outline-offset: 2px;
+}
+
+.checkout-form button {
+    align-self: flex-end;
+    background-color: #8994876e;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    border: 0.5px solid #8994879c;
+    font-weight: 500;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.checkout-form button:hover {
+    background-color: #7a95769c;
+    transform: scale(1.1);
+}
+
+.checkout-form button:focus-visible {
+    outline: 2px solid #596656;
+    outline-offset: 3px;
+}
+
+/* My orders */
+.order-card h2 {
+    margin-bottom: 1rem;
+}
+.order-card h3 {
+    margin-top: 1.5rem;
+}
+.order-items {
+    padding-left: 1.5rem;
+    line-height: 1.8;
+}
+.order-total {
+    text-align: right;
+    font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+    font-weight: 700;
+    margin-top: 1.5rem;
+}

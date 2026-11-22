@@ -18,6 +18,10 @@ import {
  }
 
  function createCartItem(item) {
+
+    // console.log('Cart product:', item);
+    // console.log('Product image path:', item.image);
+
     const article = document.createElement('article');
 
     article.className = 'cart-item';
@@ -32,12 +36,28 @@ import {
             window.location.origin
         );
 
-        if (
-            imageUrl.origin === window.location.origin &&
-            imageUrl.pathname.startsWith('/images/')
-        ) {
-            image.src = imageUrl.href;
+        if (item.image) {
+            try {
+                const imageUrl = new URL(
+                    item.image,
+                    window.location.origin
+                );
+
+                if (imageUrl.origin === window.location.origin) {
+                    image.src = imageUrl.href;
+                }
+            } catch (err) {
+                console.error('Invalid product image url:', error);
+            }
         }
+        image.alt = item.name
+
+        // if (
+        //     imageUrl.origin === window.location.origin &&
+        //     imageUrl.pathname.startsWith('/images/')
+        // ) {
+        //     image.src = imageUrl.href;
+        // }
     }
     image.alt = item.name;
 

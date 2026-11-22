@@ -12,6 +12,7 @@
         <!-- only visible when logged in -->
         <% if (isLoggedIn) { %>
             <li><a href="/dashboard">Dashboard</a></li>
+            <li><a href="/checkout/orders">My Orders</a></li>
 
             <!-- admin-only nav -->
              <% if (locals.isAdmin) { %>

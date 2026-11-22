@@ -16,7 +16,9 @@ CREATE TABLE IF NOT EXISTS users (
     email VARCHAR(255) NOT NULL UNIQUE, 
     password_hash VARCHAR(255), 
     google_id VARCHAR(255) UNIQUE,
-    role VARCHAR(20) DEFAULT 'user', 
+    role VARCHAR(20) DEFAULT 'user'
+        CONSTRAINT users_role_check
+        CHECK (role IN ('user', 'employee', 'admin')), 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -41,3 +43,4 @@ create table if not exists order_items (
 	quantity INTEGER NOT NULL CHECK (quantity > 0),
 	unit_price NUMERIC(10, 2) NOT NULL CHECK (unit_price >= 0)
 );
+

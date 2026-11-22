@@ -1,0 +1,49 @@
+<%- include('../partials/header') %>
+
+<main class="my-orders-page">
+    <h1>My Orders</h1>
+
+    <% if (orders.length === 0) { %>
+    <p>You haven't placed any orders yet.</p>
+    
+    <a href="/shop" class="continue-shopping">
+        Start Shopping
+    </a>
+    <% } else { %>
+        <% orders.forEach(order => { %>
+        <article class="order-cart">
+            <h2>Order #<%= order.id %></h2>
+            <p>
+                <strong>Date:</strong>
+                <%= new Date(order.created_at).toLocaleDateString() %>
+            </p>
+
+            <p>
+                <strong>Status:</strong>
+                <%= order.status %>
+            </p>
+
+            <h3>Items Ordered</h3>
+            <ul class="order-items">
+                <% order.items.forEach(item => { %>
+                    <li>
+                        <%= item.product_name %>
+                        - Qty: <%= item.quantity %>
+                        - $<%= Number(item.unit_price).toFixed(2) %> each 
+                    </li>
+                <% }) %>
+            </ul>
+
+            <p class="order-total">
+                <strong>Order Total:</strong>
+                $<%= Number(order.total).toFixed(2) %>
+            </p>
+        </article>
+    <% }) %>
+    <a href="/shop" class="continue-shopping">
+        Continue Shopping
+    </a>
+    <% } %>
+</main>
+
+<%- include('../partials/footer') %>

@@ -1,10 +1,14 @@
 <%- include('../partials/header') %>
-<% const isEdit = !!produce; %>
+<% const isEdit = !!product; %>
 
 <main class="dashboard-edit">
     <h1><%= title %></h1>
 
-    <form action="<%= isEdit ? `/dashboard/edit/${product.id}': '/dashboard/add' %>" method="POST">
+    <form 
+        action="<%= isEdit ? `/dashboard/edit/${product.id}` : '/dashboard/add' %>" 
+        method="POST"
+        enctype="multipart/form-data"
+    >
         <label for="name">
             Name</label>
                 <input 
@@ -18,10 +22,10 @@
         <label for="category">
             Category</label>
                 <input 
-                type="category"
+                type="text"
                 id="category"
                 name="category"
-                 value="<%= product ? product.category : '' %>" 
+                 value="<%= product ? product.category : ''%>" 
                 required
                 >
         </label>
@@ -31,7 +35,7 @@
                 <textarea 
                     id="description" 
                     name="description">
-                    <%= product ? product.description : '' %>
+                    <%= product ? product.description : ''%>
                 </textarea>
         </label>
         
@@ -46,14 +50,22 @@
             required
             >
 
-        <label for="image_url">
-            Image URL</label>
+        <label for="product_image">Product Image</label>
         <input 
-            type="text" 
-            id="image_url"
-            name="image_url" 
-            value="<%= product ? product.image_url : '' %>"
+            type="file" 
+            id="product_image"
+            name="product_image" 
+            accept="image/jpeg, image/png, image/webp"
         >
+        <% if (isEdit && product.image_sm) { %>
+        <p>Current image:</p>
+        <img 
+            src="<%= product.image_sm %>"
+            alt="<%= product.name %>"
+            class="product-image-preview"
+        >
+        <p>Leave fele filed empty to keep the current image</p>
+        <% } %>
 
         <button type="submit">
             <%= product ? 'Update Product' : 'Add Product' %>
