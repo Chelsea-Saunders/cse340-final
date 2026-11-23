@@ -47,15 +47,25 @@ export const addToCart = async (req, res, next) => {
         }
 
         const existingItem = req.session.cart.find(
-            item => item.productId === productId
+            item => Number(item.productId) === Number(productId)
         );
 
         const newQuantity = 
             (existingItem?.quantity || 0) + quantity;
 
-        if (quantity < 1 || newQuantity > 10) {
+        if (
+            !Number.isInteger(quantity) ||
+            quantity < 1 || 
+            newQuantity > 10
+        ) {
             return res.status(400).json({
                 message: 'Invalid cart quantity'
+            });
+        }
+
+        if (newQuantity > product.stock_quantity) {
+            return res.status(400).json({
+                message: `Only  ${product.stock_quantity} available in stock`
             });
         }
 
@@ -73,9 +83,35 @@ export const addToCart = async (req, res, next) => {
 };
 
 // update quantity 
-export const updateCart = (req, res, next) => {
+export const updateCart = async (req, res, next) => {
     try {
         const { productId, quantity } = req.body;
+
+        // check quantity before updateing
+        if (
+            !Number.isInteger(quantity) ||
+            quantity < 0 ||
+            quantity > 10
+        ) {
+            return res.status(400).json({
+                message: 'Invalid cart quantity'
+            });
+        }
+
+        // current inventory count
+        const product = await productModel.getProductById(productId);
+
+        if (!product) {
+            return res.status(400).json({
+                message: 'Product not found'
+            });
+        }
+
+        if (quantity > product.stock_quantity) {
+            return res.status(400).json({
+                message: `Only ${product.stock_quantity} available in stock`
+            });
+        }
 
         req.session.cart = cartModel.updateQuantity(
             req.session.cart, 

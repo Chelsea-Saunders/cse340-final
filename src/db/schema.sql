@@ -7,7 +7,9 @@ CREATE TABLE IF NOT EXISTS products (
     image_sm VARCHAR(255), 
     image_med VARCHAR(255), 
     image_lg VARCHAR(255), 
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
+    stock_quantity INTEGER NOT NULL DEFAULT 0
+        CHECK (stock_quantity >= 0)
 );
 
 CREATE TABLE IF NOT EXISTS users (

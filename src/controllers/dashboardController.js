@@ -9,30 +9,36 @@ import {
     deleteProduct
 } from '../models/productModel.js';
 
-export const showDashboard = async (req, res, next) => {
-    try {
-        res.render('dashboard/dashboard-index', { 
-            title: 'My Account', 
-            user: req.session.user
-        });
-    } catch (err) {
-        console.log(err);
-        next(err);
+function parseStockQuantity(value) {
+    if (typeof value !== 'string' || !/^\d+$/.test(value)) {
+        return null;
     }
-};
 
-// export const showDashboard = async (req, res, next) => {
-//     try {
-//         const products = await getAllProducts();
-//         res.render('dashboard/dashboard-index', { 
-//             title: 'Dashboard', 
-//             products 
-//         });
-//     } catch (err) {
-//         console.log(err);
-//         next(err);
-//     }
-// };
+    const quantity = Number(value);
+
+    if (!Number.isSafeInteger(quantity) || quantity < 0) {
+        return null;
+    }
+
+    return quantity;
+}
+
+export const showDashboard = async (req, res, next) => {
+    const user = req.session.user;
+
+    if (user.role === 'admin') {
+        return res.redirect('/dashboard/admin');
+    }
+
+    if (user.role === 'employee') {
+        return res.redirect('/dashboard/employee');
+    }
+
+    return res.render('dashboard/dashboard-index', { 
+        title: 'My Account', 
+        user
+    });
+};
 
 export const showAddForm = (req, res) => {
     res.render('dashboard/edit', { title: 'Add Product', product: null });
@@ -44,34 +50,41 @@ export const addProduct = async (req, res, next) => {
             return res.status(400).send('Please upload a product image');
         }
 
+        const stockQuantity = parseStockQuantity(req.body.stock_quantity);
+
+        if (stockQuantity === null) {
+            return res.status(400).send(
+                'Quantity available must be a non-negative whole number'
+            );
+        }
+
         const imagePath = `/uploads/products/${req.file.filename}`;
 
         await createProduct({
             ...req.body,
+            stock_quantity: stockQuantity,
             image_sm: imagePath,
             image_med: imagePath,
             image_lg: imagePath
         });
 
-        res.redirect('/dashboard');
+        res.redirect('/dashboard/products');
     }catch (err) {
         console.error(err);
         next(err);
     }
 };
-// export const addProduct = async (req, res, next) => {
-//     try {
-//         await createProduct(req.body);
-//         res.redirect('/dashboard');
-//     } catch (err) {
-//         console.error(err);
-//         next(err);
-//     }
-// };
 
 export const showEditForm = async (req, res, next) => {
     try {
         const product = await getProductById(req.params.id);
+
+        console.log('Product loaded for edit:', {
+            id: product?.id,
+            name: product?.name,
+            stock_quantity: product?.stock_quantity
+        });
+
         if (!product) {
             const err = new Error('Product not found');
             err.status = 404;
@@ -86,10 +99,17 @@ export const showEditForm = async (req, res, next) => {
 
 export const editProduct = async (req, res, next) => {
     try {
+        const stockQuantity = parseStockQuantity(req.body.stock_quantity);
         const existingProduct = await getProductById(req.params.id);
 
         if(!existingProduct) {
             return res.status(404).send('Product not found');
+        }
+
+        if(stockQuantity === null) {
+            return res.status(400).send(
+                'Quantity availbale must be a non-negative whole number'
+            );
         }
 
         const imagePath = req.file
@@ -98,35 +118,42 @@ export const editProduct = async (req, res, next) => {
 
         await updateProduct(req.params.id, {
             ...req.body,
+            stock_quantity: stockQuantity,
             image_sm: imagePath || existingProduct.image_sm,
             image_med: imagePath || existingProduct.image_med,
             image_lg: imagePath || existingProduct.image_lg
         });
 
-        res.redirect('/dashboard');
+        res.redirect('/dashboard/products');
     } catch (err) {
         console.error(err);
         next(err);
     }
 };
 
-// export const editProduct = async (req, res, next) => {
-//     try {
-//         await updateProduct(req.params.id, req.body);
-//         res.redirect('/dashboard');
-//     } catch (err) {
-//         console.error(err);
-//         next(err);
-//     }
-// };
-
 export const removeProduct = async (req, res, next) => {
     try {
         await deleteProduct(req.params.id);
-        res.redirect('/dashboard');
+        res.redirect('/dashboard/products');
     } catch (err) {
         console.error(err);
         next(err);
+    }
+};
+
+// manage products page
+export const showManageProducts = async (req, res, next) => {
+    try {
+        const products = await getAllProducts();
+
+        res.render('dashboard/products', {
+            title: 'Manage Products',
+            user: req.session.user, 
+            products
+        });
+    } catch (err) {
+        console.error('Unable to load products:', err);
+        next (err);
     }
 };
 
@@ -164,7 +191,7 @@ export const updateProfile = async (req, res, next) => {
         const name = req.body.name?.trim();
 
         if (!name || name.length > 100) {
-            return res.satus(400).send(
+            return res.status(400).send(
                 'Name must be between 1 and 100 characters'
             );
         }

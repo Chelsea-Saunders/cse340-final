@@ -1,7 +1,7 @@
 import pool from '../db/pgSQL.js';
 
 export const getAllProducts = async () => {
-    const result = await pool.query('SELECT * FROM products ORDER BY created_at DESC');
+    const result = await pool.query('SELECT * FROM products ORDER BY id ASC');
     return result.rows;
 };
 
@@ -17,7 +17,8 @@ export const createProduct = async ({
     price, 
     image_sm,
     image_med,
-    image_lg 
+    image_lg ,
+    stock_quantity
 }) => {
     const result = await pool.query(
         `INSERT INTO products (
@@ -27,9 +28,10 @@ export const createProduct = async ({
             price, 
             image_sm,
             image_med,
-            image_lg
+            image_lg,
+            stock_quantity
             )
-        VALUES ($1, $2, $3, $4, $5, $6, $7)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
         RETURNING *`, 
         [
             name, 
@@ -38,7 +40,8 @@ export const createProduct = async ({
             price, 
             image_sm,
             image_med,
-            image_lg
+            image_lg, 
+            stock_quantity
         ]
     );
     return result.rows[0];
@@ -51,7 +54,8 @@ export const updateProduct = async (id, {
     price, 
     image_sm,
     image_med,
-    image_lg 
+    image_lg,
+    stock_quantity
 }) => {
     const result = await pool.query(
         `UPDATE products
@@ -61,8 +65,9 @@ export const updateProduct = async (id, {
             price = $4, 
             image_sm = $5,
             image_med = $6,
-            image_lg = $7
-        WHERE id = $8
+            image_lg = $7,
+            stock_quantity = $8
+        WHERE id = $9
         RETURNING *`, 
         [
             name, 
@@ -72,9 +77,16 @@ export const updateProduct = async (id, {
             image_sm,
             image_med,
             image_lg, 
+            stock_quantity,
             id
         ]
     );
+
+
+    console.log('Updated product rows:', result.rowCount);
+    console.log('Update product:', result.rows[0]);
+
+
     return result.rows[0];
 };
 

@@ -17,8 +17,10 @@ export async function cartRequest(endpoint, data) {
     );
 
     if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+
         throw new Error(
-            `Cart request failed: ${response.status}`
+            errorData.message || `Cart request failed: ${response.status}`
         );
     }
 

@@ -31,10 +31,10 @@ import {
     const image = document.createElement('img');
 
     if (item.image) {
-        const imageUrl = new URL (
-            item.image, 
-            window.location.origin
-        );
+        // const imageUrl = new URL (
+        //     item.image, 
+        //     window.location.origin
+        // );
 
         if (item.image) {
             try {
@@ -47,17 +47,10 @@ import {
                     image.src = imageUrl.href;
                 }
             } catch (err) {
-                console.error('Invalid product image url:', error);
+                console.error('Invalid product image url:', err);
             }
         }
         image.alt = item.name
-
-        // if (
-        //     imageUrl.origin === window.location.origin &&
-        //     imageUrl.pathname.startsWith('/images/')
-        // ) {
-        //     image.src = imageUrl.href;
-        // }
     }
     image.alt = item.name;
 
@@ -207,7 +200,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             console.error('Cart operation failed:', err);
 
             showError(
-                'Unable to update your cart. Please try again.'
+                'Cannot add more items to your cart than are available.'
             );
         } finally { 
             setUpdating(false);
@@ -280,7 +273,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error('Unable to load cart:', err);
 
         showError(
-            'Unable to load your shopping cart. Please refresh'
+            err.message || 'Unable to load your shopping cart. Please refresh'
         );
     } finally {
         setUpdating(false);

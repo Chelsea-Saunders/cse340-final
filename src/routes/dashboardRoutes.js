@@ -7,6 +7,7 @@ import {
     showSecurity,
     updatePassword,
     showDashboard, 
+    showManageProducts,
     showAddForm, 
     addProduct, 
     showEditForm, 
@@ -41,6 +42,7 @@ router.get('/employee', requireEmployee, showEmployeeDashboard);
 router.get('/admin', requireAdmin, showAdminDashboard);
 
 // ONLY ADMIN can manage products
+router.get('/products', requireAdmin, showManageProducts);
 router.get('/add', requireAdmin, showAddForm);
 router.post('/add', requireAdmin, uploadProductImage, addProduct);
 

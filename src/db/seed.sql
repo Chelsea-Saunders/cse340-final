@@ -8,7 +8,8 @@ insert into products (
 	price, 
 	image_sm, 
 	image_med, 
-	image_lg
+	image_lg,
+	stock_quantity
 ) 
 values
 	('Baby Moccasins', 
@@ -25,7 +26,8 @@ values
 	65.00,
 	'/images/shop/2-500.webp',
 	'/images/shop/2-800.webp',
-	'/images/shop/2-1200.webp'
+	'/images/shop/2-1200.webp',
+	1
 	),
 	('Sunflower Leather Key Ring', 
 	'leather', 
@@ -33,7 +35,8 @@ values
 	45.00,
 	'/images/shop/3-500.webp',
 	'/images/shop/3-800.webp',
-	'/images/shop/3-1200.webp'
+	'/images/shop/3-1200.webp',
+	1
 	),
 	('Boot Remover', 
 	'leather', 
@@ -41,7 +44,8 @@ values
 	65.00,
 	'/images/shop/4-500.webp',
 	'/images/shop/4-800.webp',
-	'/images/shop/4-1200.webp'
+	'/images/shop/4-1200.webp',
+	1
 	),
 	('Leather Purse', 
 	'leather', 
@@ -49,7 +53,8 @@ values
 	200.00,
 	'/images/shop/5-500.webp',
 	'/images/shop/5-800.webp',
-	'/images/shop/5-1200.webp'
+	'/images/shop/5-1200.webp',
+	1
 	),
 	('Leather Christmas Stockings', 
 	'leather', 
@@ -57,7 +62,8 @@ values
 	30.00,
 	'/images/shop/6-500.webp',
 	'/images/shop/6-800.webp',
-	'/images/shop/6-1200.webp'
+	'/images/shop/6-1200.webp',
+	1
 	),
 	('Leather Christmas Stockings: Horse', 
 	'leather', 
@@ -65,7 +71,8 @@ values
 	30.00,
 	'/images/shop/7-500.webp',
 	'/images/shop/7-800.webp',
-	'/images/shop/7-1200.webp'
+	'/images/shop/7-1200.webp',
+	1
 	),
 	('Leather Christmas Stocking: Woven', 
 	'leather', 
@@ -73,7 +80,8 @@ values
 	30.00,
 	'/images/shop/8-500.webp',
 	'/images/shop/8-800.webp',
-	'/images/shop/8-1200.webp'
+	'/images/shop/8-1200.webp',
+	1
 	),
 	('Leather Christmas Stockings: Longhorns', 
 	'leather', 
@@ -81,7 +89,8 @@ values
 	30.00,
 	'/images/shop/9-500.webp',
 	'/images/shop/9-800.webp',
-	'/images/shop/9-1200.webp'
+	'/images/shop/9-1200.webp',
+	1
 	),
 	('Leather Christmas Stocking: Sunflower', 
 	'leather', 
@@ -89,7 +98,8 @@ values
 	30.00,
 	'/images/shop/10-500.webp',
 	'/images/shop/10-800.webp',
-	'/images/shop/10-1200.webp'
+	'/images/shop/10-1200.webp',
+	1
 	),
 	('Leather Phone Case', 
 	'leather', 
@@ -97,7 +107,8 @@ values
 	45.00,
 	'/images/shop/11-500.webp',
 	'/images/shop/11-800.webp',
-	'/images/shop/11-1200.webp'
+	'/images/shop/11-1200.webp',
+	1
 	),
 	('Spur Straps', 
 	'leather', 
@@ -105,7 +116,8 @@ values
 	55.00,
 	'/images/shop/12-500.webp',
 	'/images/shop/12-800.webp',
-	'/images/shop/12-1200.webp'
+	'/images/shop/12-1200.webp',
+	1
 	),
 	('Spur Straps', 
 	'leather', 
@@ -113,7 +125,8 @@ values
 	50.00,
 	'/images/shop/15-500.webp',
 	'/images/shop/15-800.webp',
-	'/images/shop/15-1200.webp'
+	'/images/shop/15-1200.webp',
+	1
 	),
 	('Spur Straps', 
 	'leather', 
@@ -121,7 +134,8 @@ values
 	65.00,
 	'/images/shop/16-500.webp',
 	'/images/shop/16-800.webp',
-	'/images/shop/16-1200.webp'
+	'/images/shop/16-1200.webp',
+	1
 	),
 	('Leather Bridle', 
 	'leather', 
@@ -129,7 +143,8 @@ values
 	55.00,
 	'/images/shop/17-500.webp',
 	'/images/shop/17-800.webp',
-	'/images/shop/17-1200.webp'
+	'/images/shop/17-1200.webp',
+	1
 	),
 	('Leather Bridle', 
 	'leather', 
@@ -137,7 +152,8 @@ values
 	50.00,
 	'/images/shop/18-500.webp',
 	'/images/shop/18-800.webp',
-	'/images/shop/18-1200.webp'
+	'/images/shop/18-1200.webp',
+	1
 	),
 	('Glasses Case', 
 	'leather', 
@@ -145,7 +161,8 @@ values
 	45.00,
 	'/images/shop/19-500.webp',
 	'/images/shop/19-800.webp',
-	'/images/shop/19-1200.webp'
+	'/images/shop/19-1200.webp',
+	1
 	),
 	('Boot Remover', 
 	'leather', 
@@ -153,7 +170,8 @@ values
 	45.00,
 	'/images/shop/20-500.webp',
 	'/images/shop/20-800.webp',
-	'/images/shop/20-1200.webp'
+	'/images/shop/20-1200.webp',
+	1
 	),
 	('Rope Halter', 
 	'leather', 
@@ -161,7 +179,8 @@ values
 	65.00,
 	'/images/shop/21-500.webp',
 	'/images/shop/21-800.webp',
-	'/images/shop/21-1200.webp'
+	'/images/shop/21-1200.webp',
+	1
 	),
 	('Queen-of-Hearts Pocketbook', 
 	'leather', 
@@ -169,7 +188,8 @@ values
 	125.00,
 	'/images/shop/22-500.webp',
 	'/images/shop/22-800.webp',
-	'/images/shop/22-1200.webp'
+	'/images/shop/22-1200.webp',
+	1
 	),
 	('Longhorn Leather Handbag', 
 	'leather', 
@@ -177,7 +197,8 @@ values
 	85.00,
 	'/images/shop/23-500.webp',
 	'/images/shop/23-800.webp',
-	'/images/shop/23-1200.webp'
+	'/images/shop/23-1200.webp',
+	1
 	),
 	('Leather Wallet: Steer Roping', 
 	'leather', 
@@ -185,7 +206,8 @@ values
 	50.00,
 	'/images/shop/24-500.webp',
 	'/images/shop/24-800.webp',
-	'/images/shop/24-1200.webp'
+	'/images/shop/24-1200.webp',
+	1
 	),
 	('Wooden Stool', 
 	'leather', 
@@ -193,7 +215,8 @@ values
 	100.00,
 	'/images/shop/25-500.webp',
 	'/images/shop/25-800.webp',
-	'/images/shop/25-1200.webp'
+	'/images/shop/25-1200.webp',
+	1
 	),
 	('Cupholder', 
 	'leather', 
@@ -201,7 +224,8 @@ values
 	15.00,
 	'/images/shop/27-500.webp',
 	'/images/shop/27-800.webp',
-	'/images/shop/27-1200.webp'
+	'/images/shop/27-1200.webp',
+	1
 	),
 	('Hey Dudes', 
 	'leather', 
@@ -209,7 +233,8 @@ values
 	130.00,
 	'/images/shop/28-500.webp',
 	'/images/shop/28-800.webp',
-	'/images/shop/28-1200.webp'
+	'/images/shop/28-1200.webp',
+	1
 	),
 	('Decorative Pillow: Broncs', 
 	'leather', 
@@ -217,7 +242,8 @@ values
 	60.00,
 	'/images/shop/13-500.webp',
 	'/images/shop/13-800.webp',
-	'/images/shop/13-1200.webp'
+	'/images/shop/13-1200.webp',
+	1
 	),
 	('Bucking Bronc Print', 
 	'photography', 
@@ -225,7 +251,8 @@ values
 	60.00,
 	'/images/photography/p1.webp',
     '/images/photography/p1.webp',
-    '/images/photography/p1.webp'
+    '/images/photography/p1.webp',
+	1
 	),
 	('Leaping Bronc Print', 
 	'photography', 
@@ -233,7 +260,8 @@ values
 	50.00,
 	'/images/photography/p2.webp',
     '/images/photography/p2.webp',
-    '/images/photography/p2.webp'
+    '/images/photography/p2.webp',
+	1
 	),
 	('Falling off Bronc Print', 
 	'photography', 
@@ -241,7 +269,8 @@ values
 	50.00,
 	'/images/photography/p3.webp',
     '/images/photography/p3.webp',
-    '/images/photography/p3.webp'
+    '/images/photography/p3.webp',
+	1
 	),
 	('Flying Bronc Print', 
 	'photography', 
@@ -249,7 +278,8 @@ values
 	50.00,
 	'/images/photography/p4.webp',
     '/images/photography/p4.webp',
-    '/images/photography/p4.webp'
+    '/images/photography/p4.webp',
+	1
 	),
 	('Clown on Bronc Print', 
 	'photography', 
@@ -257,7 +287,8 @@ values
 	50.00,
 	'/images/photography/p5.webp',
     '/images/photography/p5.webp',
-    '/images/photography/p5.webp'
+    '/images/photography/p5.webp',
+	1
 	),
 	('Roping Calf Print', 
 	'photography', 
@@ -265,7 +296,8 @@ values
 	50.00,
 	'/images/photography/p6.webp',
     '/images/photography/p6.webp',
-    '/images/photography/p6.webp'
+    '/images/photography/p6.webp',
+	1
 	),
 	('Rodeo Bronc Print', 
 	'photography', 
@@ -273,7 +305,8 @@ values
 	50.00,
 	'/images/photography/p7.webp',
     '/images/photography/p7.webp',
-    '/images/photography/p7.webp'
+    '/images/photography/p7.webp',
+	1
 	),
 	('Rodeo Bronc 2 Print', 
 	'photography', 
@@ -281,7 +314,8 @@ values
 	50.00,
 	'/images/photography/p8.webp',
     '/images/photography/p8.webp',
-    '/images/photography/p8.webp'
+    '/images/photography/p8.webp',
+	1
 	),
 	('Roping a Calf', 
 	'photography', 
@@ -289,7 +323,8 @@ values
 	50.00,
 	'/images/photography/p9.webp',
     '/images/photography/p9.webp',
-    '/images/photography/p9.webp'
+    '/images/photography/p9.webp',
+	1
 	),
 	('Saddle Tie', 
 	'screen-prints', 
@@ -297,7 +332,8 @@ values
 	30.00,
 	'/images/prints/200-500.webp',
 	'/images/prints/200-800.webp',
-	'/images/prints/200-1000.webp'
+	'/images/prints/200-1000.webp',
+	1
 	),
 	('Western Phone Case', 
 	'screen-prints', 
@@ -305,7 +341,8 @@ values
 	30.00,
 	'/images/prints/202-500.webp',
 	'/images/prints/202-700.webp',
-    '/images/prints/202-700.webp'
+    '/images/prints/202-700.webp',
+	1
 	),
 	('Western Onsie', 
 	'screen-prints', 
@@ -313,5 +350,6 @@ values
 	30.00,
 	'/images/prints/201-500.webp',
     '/images/prints/201-500.webp',
-    '/images/prints/201-500.webp'
+    '/images/prints/201-500.webp',
+	1
 	);
