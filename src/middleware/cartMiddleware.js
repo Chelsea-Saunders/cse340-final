@@ -1,18 +1,23 @@
 import * as cartModel from '../models/cartModel.js';
+import * as reservationModel from '../models/reservationModel.js';
 
 // make cart count accessable to ejs
-export const addCartLocals = (req, res, next) => {
-    res.locals.cartCount = cartModel.getCartItemCount(
-        req.session.cart || []
-    );
-
-    next();
+export const addCartLocals = async (req, res, next) => {
+    try {
+        const items = await reservationModel.getCartItems(
+            req.sessionID
+        );
+        res.locals.cartCount = cartModel.getCartItemCount(items);
+        next();
+    } catch (err) {
+        next(err);
+    }
 };
 
 // initialize session cart
 export const initializeCart = (req, res, next) => {
-    if (!Array.isArray(req.session.cart)) {
-        req.session.cart = [];
+    if (!req.session.cartInitialized) {
+        req.session.cartInitialized = true;
     }
     next();
 };

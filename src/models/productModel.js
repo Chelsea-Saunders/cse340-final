@@ -6,7 +6,28 @@ export const getAllProducts = async () => {
 };
 
 export const getProductById = async (id) => {
-    const result = await pool.query('SELECT * FROM products WHERE id = $1', [id]);
+    const result = await pool.query(
+        `SELECT p.*,
+            GREATEST(
+                p.stock_quantity - COALESCE(
+                (
+                    SELECT SUM(r.quantity)
+                    FROM inventory_reservations r
+                    WHERE r.product_id = p.id
+                        AND r.expires_at > NOW()
+                    ), 0
+                ), 0
+            )::integer AS available_quantity
+        FROM products p
+        WHERE p.id = $1`,
+        [id]
+    );
+
+    console.log('Product inventory:', {
+        stock: result.rows[0]?.stock_quantity,
+        available: result.rows[0]?.available_quantity
+    }); 
+    
     return result.rows[0];
 };
 

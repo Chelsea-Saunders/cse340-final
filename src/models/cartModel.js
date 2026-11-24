@@ -1,4 +1,5 @@
 import * as productModel from './productModel.js';
+import pool from '../db/pgSQL.js';
 
 // retrieve cart product details
 export const getCartItems = async (cart) => {
@@ -81,3 +82,16 @@ export const getCartTotal = (items) => {
     );
     return totalCents / 100;
 };
+
+// 15 minute cart reservation
+// export const getReservationQuantity = async (productId) => {
+//     const result = await pool.query(
+//         `SELECT COALESCE(SUM(quantity), 0)::integer AS reserved
+//         FROM inventory_reservations
+//         WHERE product_id = $1
+//             AND expires_at > now()`,
+//         [productId]
+//     );
+
+//     return result.rows[0].reserved;
+// };

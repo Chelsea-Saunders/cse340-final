@@ -18,17 +18,17 @@
         <p class="description"><%= product.description %></p>
         <div class="bottom">
             <p class="price">$<%= product.price %></p>
-            <% if (product.stock_quantity === 0) { %> 
+            <% if (product.available_quantity === 0) { %> 
                 <p class="stock-status out-of-stock">
                     Out of Stock
                 </p>
-            <% } else if (product.stock_quantity <= 1) { %>
+            <% } else if (product.available_quantity <= 1) { %>
                 <p class="stock-status low-stock">
-                    Only <%= product.stock_quantity %> left!
+                    Only <%= product.available_quantity %> left!
                 </p>
             <% } else { %>
                 <p class="stock-status in-stock">
-                    In Stock: <%= product.stock_quantity %> available
+                    In Stock: <%= product.available_quantity %> available
                 </p>
             <% } %>
 
@@ -50,7 +50,7 @@
                 data-add-to-cart
                 <%= product.stock_quantity === 0 ? 'disabled' : '' %>
                 >
-                <%= product.stock_quantity === 0 ? 'Out of Stock' : 'Add to Cart' %>
+                <%= product.available_quantity === 0 ? 'Out of Stock' : 'Add to Cart' %>
             </button>
             <p class="cart-message" data-cart-message></p>
         </div>

@@ -1,6 +1,6 @@
 
 import * as cartModel from '../models/cartModel.js';
-import * as productModel from '../models/productModel.js';
+import * as reservationModel from '../models/reservationModel.js';
 
 // display cart page
 export const showCart = async (req, res, next) => {
@@ -17,8 +17,8 @@ export const showCart = async (req, res, next) => {
 // return cart data
 export const getCart = async (req, res, next) => {
     try {
-        const items = await cartModel.getCartItems(
-            req.session.cart 
+        const items = await reservationModel.getCartItems(
+            req.sessionID
         );
 
         res.json({
@@ -36,48 +36,26 @@ export const getCart = async (req, res, next) => {
 export const addToCart = async (req, res, next) => {
     try {
         const { productId, quantity } = req.body;
-        const product = await productModel.getProductById(
-            productId 
-        );
-
-        if (!product) {
-            return res.status(404).json({
-                message: 'Product not found'
-            });
-        }
-
-        const existingItem = req.session.cart.find(
-            item => Number(item.productId) === Number(productId)
-        );
-
-        const newQuantity = 
-            (existingItem?.quantity || 0) + quantity;
-
-        if (
-            !Number.isInteger(quantity) ||
-            quantity < 1 || 
-            newQuantity > 10
-        ) {
-            return res.status(400).json({
-                message: 'Invalid cart quantity'
-            });
-        }
-
-        if (newQuantity > product.stock_quantity) {
-            return res.status(400).json({
-                message: `Only  ${product.stock_quantity} available in stock`
-            });
-        }
-
-        req.session.cart = cartModel.addToCart(
-            req.session.cart, 
+        await reservationModel.reserveProduct(
+            req.sessionID,
             productId,
             quantity
         );
-
         return getCart(req, res, next);
+
     } catch (err) {
         console.log(err);
+
+        if ([
+            'Invalid product or quantity', 
+            'Invalid cart quantity',
+            'Product not found',
+            'Cannot add more items to your cart than are available'
+        ].includes(err.message)) {
+            return res.status(400).json({
+                message: err.message
+            });
+        }
         next(err);
     }
 };
@@ -87,52 +65,38 @@ export const updateCart = async (req, res, next) => {
     try {
         const { productId, quantity } = req.body;
 
-        // check quantity before updateing
-        if (
-            !Number.isInteger(quantity) ||
-            quantity < 0 ||
-            quantity > 10
-        ) {
-            return res.status(400).json({
-                message: 'Invalid cart quantity'
-            });
-        }
-
-        // current inventory count
-        const product = await productModel.getProductById(productId);
-
-        if (!product) {
-            return res.status(400).json({
-                message: 'Product not found'
-            });
-        }
-
-        if (quantity > product.stock_quantity) {
-            return res.status(400).json({
-                message: `Only ${product.stock_quantity} available in stock`
-            });
-        }
-
-        req.session.cart = cartModel.updateQuantity(
-            req.session.cart, 
+        await reservationModel.updateReservationQuantity(
+            req.sessionID,
             productId, 
             quantity
         );
 
         return getCart(req, res, next);
+
     } catch (err) {
         console.log(err);
+
+        if ([
+            'Invalid product or quantity',
+            'Product not found', 
+            'Reservation expired or not found',
+            'Cannot add more items to your cart than are available.'
+        ].includes(err.message)) {
+            return res.status(400).json({
+                message: err.message
+            });
+        }
         next(err);
     }
 };
 
 // remove product from cart
-export const removeFromCart = (req, res, next) => {
+export const removeFromCart = async(req, res, next) => {
     try {
         const { productId } = req.body;
 
-        req.session.cart = cartModel.removeFromCart(
-            req.session.cart, 
+       await reservationModel.removeReservation(
+            req.sessionID, 
             productId
         );
 
@@ -144,9 +108,11 @@ export const removeFromCart = (req, res, next) => {
 };
 
 // clear cart
-export const clearCart = (req, res, next) => {
+export const clearCart = async (req, res, next) => {
     try {
-        req.session.cart = cartModel.clearCart();
+        await reservationModel.clearReservations(
+            req.sessionID
+        );
 
         return getCart(req, res, next);
     } catch (err){

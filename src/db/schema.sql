@@ -12,6 +12,23 @@ CREATE TABLE IF NOT EXISTS products (
         CHECK (stock_quantity >= 0)
 );
 
+CREATE TABLE inventory_reservations(
+	id BIGSERIAL PRIMARY KEY, 
+	session_id TEXT NOT NULL,
+	product_id INTEGER NOT NULL
+		REFERENCES products(id) ON DELETE CASCADE,
+	quantity INTEGER NOT NULL CHECK (quantity > 0), 
+	reserved_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+	expires_at TIMESTAMPTZ NOT NULL,
+	UNIQUE (session_id, product_id)
+);
+
+CREATE INDEX idx_inventory_reservations_expires_at
+ON inventory_reservations (expires_at);
+
+CREATE INDEX idx_inventory_reservations_product_id
+ON inventory_reservations (product_id);
+
 CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY, 
     name VARCHAR(100) NOT NULL, 
@@ -37,7 +54,7 @@ CREATE TABLE IF NOT EXISTS orders (
 	created_at timestamp DEFAULT CURRENT_TIMESTAMP
 );
 
-create table if not exists order_items (
+CREATE TABLE IF NOT EXISTS order_items (
 	id SERIAL PRIMARY KEY,
 	order_id INTEGER NOT NULL REFERENCES orders(id) ON DELETE CASCADE, 
 	product_id INTEGER NOT NULL, 
