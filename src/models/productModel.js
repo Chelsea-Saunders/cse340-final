@@ -23,11 +23,6 @@ export const getProductById = async (id) => {
         [id]
     );
 
-    console.log('Product inventory:', {
-        stock: result.rows[0]?.stock_quantity,
-        available: result.rows[0]?.available_quantity
-    }); 
-    
     return result.rows[0];
 };
 

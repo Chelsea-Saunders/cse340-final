@@ -39,16 +39,16 @@
                 type="number" 
                 value="1" 
                 min="1" 
-                max="<%= product.stock_quantity %>"
+                max="<%= Math.min(product.available_quantity, 10) %>"
                 step="1"
                 data-quantity
-                <%= product.stock_quantity === 0 ? 'disabled' : '' %>
+                <%= product.available_quantity === 0 ? 'disabled' : '' %>
             >
 
             <button 
                 type="button" 
                 data-add-to-cart
-                <%= product.stock_quantity === 0 ? 'disabled' : '' %>
+                <%= product.available_quantity === 0 ? 'disabled' : '' %>
                 >
                 <%= product.available_quantity === 0 ? 'Out of Stock' : 'Add to Cart' %>
             </button>

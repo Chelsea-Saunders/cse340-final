@@ -17,11 +17,20 @@ import {
     return button;
  }
 
+ function formatTimeRemaining(expiresAt) {
+    const remaining = Math.max(
+        0,
+        new Date(expiresAt).getTime() - Date.now()
+    );
+
+    const totalSeconds = Math.ceil(remaining / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+
+    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+ }
+
  function createCartItem(item) {
-
-    // console.log('Cart product:', item);
-    // console.log('Product image path:', item.image);
-
     const article = document.createElement('article');
 
     article.className = 'cart-item';
@@ -63,6 +72,13 @@ import {
     const price = document.createElement('p');
     price.textContent = `$${Number(item.price).toFixed(2)}`;
 
+    const timer = document.createElement('p');
+
+    timer.className = 'reservation-timer';
+    timer.dataset.expiresAt = item.expiresAt;
+
+    timer.textContent = `Reserved for: ${formatTimeRemaining(item.expiresAt)}`;
+
     // quantity controls
     const controls = document.createElement('div');
     controls.className = 'cart-item-controls';
@@ -90,13 +106,14 @@ import {
         removeButton
     );
 
-    info.append(name, price, controls);
+    info.append(name, price, timer, controls);
     article.append(image, info);
 
     return article;
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
+
     const cartItems = document.querySelector('[data-cart-items]');
     const cartCount = document.querySelector('[data-cart-count]');
     const cartTotal = document.querySelector('[data-cart-total]');
@@ -112,6 +129,56 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     let isUpdating = false;
+
+    // update reservation countdowns
+    function updateReservationTimers() {
+        const timers = document.querySelectorAll(
+            '.reservation-timer[data-expires-at]'
+        );
+
+        timers.forEach(timer => {
+            const expiresAt = timer.dataset.expiresAt;
+
+            const remaining = Math.max(
+                0,
+                new Date(expiresAt).getTime() - Date.now()
+            );
+
+            timer.textContent = remaining === 0
+                ? 'Reservation expired'
+                : `Reserved for: ${formatTimeRemaining(expiresAt)}`;
+
+            timer.classList.toggle(
+                'reservation-warning', 
+                remaining <= 60000
+            );
+        });
+
+        const hasExpired = currentCart.items.some(item => 
+            new Date(item.expiresAt).getTime() <= Date.now()
+        );
+
+        if (hasExpired && !isUpdating) {
+            refreshExpiredCart();
+        }
+    }
+
+    // refresh cart after timer expires
+    async function refreshExpiredCart() {
+        if (isUpdating) return;
+
+        setUpdating(true);
+
+        try {
+            const cart = await getCart();
+
+            renderCart(cart);
+        } catch (err) {
+            console.error('Unable to refresh expired cart:', err);
+        } finally {
+            setUpdating(false);
+        }
+    }
 
     // cart errors
     function showError(message = '') {
@@ -269,6 +336,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const cart = await getCart();
 
         renderCart(cart);
+
     } catch (err) {
         console.error('Unable to load cart:', err);
 
@@ -278,4 +346,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     } finally {
         setUpdating(false);
     }
+
+     // countdown
+        updateReservationTimers();
+        setInterval(updateReservationTimers, 1000);
 });

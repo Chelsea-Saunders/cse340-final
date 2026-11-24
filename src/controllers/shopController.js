@@ -56,3 +56,25 @@ export const showItem = async (req, res, next) => {
         next(err);
     }
 };
+
+export const getProductAvailability = async (req, res, next) => {
+    try {
+        const product = await productModel.getProductById(req.params.id);
+
+        if (!product) {
+            return res.status(404).json({
+                message: 'Product not found'
+            });
+        }
+
+        res.set('Cache-Control', 'no-store');
+
+        res.json({
+            id: product.id,
+            available_quantity: product.available_quantity
+        });
+    } catch (err) {
+        console.error(err);
+        next(err);
+    }
+};

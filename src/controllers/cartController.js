@@ -17,6 +17,10 @@ export const showCart = async (req, res, next) => {
 // return cart data
 export const getCart = async (req, res, next) => {
     try {
+
+        console.log('GET CART SESSION:', req.sessionID);
+
+
         const items = await reservationModel.getCartItems(
             req.sessionID
         );
@@ -35,6 +39,8 @@ export const getCart = async (req, res, next) => {
 // add product 
 export const addToCart = async (req, res, next) => {
     try {
+
+        console.log('ADD TO CART SESSION:', req.sessionID);
         const { productId, quantity } = req.body;
         await reservationModel.reserveProduct(
             req.sessionID,

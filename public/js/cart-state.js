@@ -2,7 +2,7 @@
 
 export async function cartRequest(endpoint, data) {
     const options = data === undefined
-        ? { method: 'GET' }
+        ? { method: 'GET', cache: 'no-store' }
         : {
             method: 'POST', 
             headers: {

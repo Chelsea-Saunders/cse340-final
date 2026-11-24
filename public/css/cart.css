@@ -117,6 +117,16 @@
     font-weight: 500;
 }
 
+.reservation-timer {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #287a3d;
+    font-variant-numeric: tubular-nums;
+}
+.reservatin-timer.reservation-warning {
+    color: #c62828;
+}
+
 @media(max-width: 400px) {
     .cart-item {
         flex-direction: column;
