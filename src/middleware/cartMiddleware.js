@@ -24,13 +24,26 @@ export const initializeCart = (req, res, next) => {
 
 // validate product id
 export const validateProductId = (req, res, next) => {
-    const productId = Number(req.body.productId);
+    const value = req.body?.productId;
 
-    if (!Number.isInteger(productId) ||
-        productId < 1 ||
-        productId > 2147483647) {
+    if (
+        typeof value !== 'string' &&
+        typeof value !== 'number' ||
+        !/^\d+$/.test(String(value))
+    ) {
         return res.status(400).json({
-            message: 'Invalid product Id'
+            message: 'Invalid product ID'
+        });
+    }
+
+    const productId = Number(value);
+
+    if (
+        !Number.isSafeInteger(productId) ||
+        productId < 1 || productId > 2147483647
+    ) {
+        return res.status(400).json({
+            message: 'Invalid product ID'
         });
     }
 
@@ -41,7 +54,19 @@ export const validateProductId = (req, res, next) => {
 
 // validate quantity
 export const validateQuantity = (req, res, next) => {
-    const quantity = Number(req.body.quantity);
+    const value = req.body?.quantity;
+
+    if (
+        typeof value !== 'string' &&
+        typeof value !== 'number' ||
+        !/^\d+$/.test(String(value))
+    ) {
+        return res.status(400).json({
+            message: 'Invalid quantity'
+        });
+    }
+
+    const quantity = Number(value);
 
     if (!Number.isInteger(quantity) ||
         quantity < 0 ||

@@ -1,4 +1,3 @@
-import pool from '../db/pgSQL.js';
 import bcrypt from 'bcrypt';
 
 import {
@@ -9,19 +8,9 @@ import {
     deleteProduct
 } from '../models/productModel.js';
 
-function parseStockQuantity(value) {
-    if (typeof value !== 'string' || !/^\d+$/.test(value)) {
-        return null;
-    }
+import * as userModel from '../models/userModel.js';
+import * as contactModel from '../models/contactModel.js';
 
-    const quantity = Number(value);
-
-    if (!Number.isSafeInteger(quantity) || quantity < 0) {
-        return null;
-    }
-
-    return quantity;
-}
 
 export const showDashboard = async (req, res, next) => {
     const user = req.session.user;
@@ -46,29 +35,17 @@ export const showAddForm = (req, res) => {
 
 export const addProduct = async (req, res, next) => {
     try {
-        if(!req.file) {
-            return res.status(400).send('Please upload a product image');
-        }
-
-        const stockQuantity = parseStockQuantity(req.body.stock_quantity);
-
-        if (stockQuantity === null) {
-            return res.status(400).send(
-                'Quantity available must be a non-negative whole number'
-            );
-        }
-
         const imagePath = `/uploads/products/${req.file.filename}`;
 
         await createProduct({
             ...req.body,
-            stock_quantity: stockQuantity,
             image_sm: imagePath,
             image_med: imagePath,
             image_lg: imagePath
         });
 
         res.redirect('/dashboard/products');
+
     }catch (err) {
         console.error(err);
         next(err);
@@ -77,7 +54,7 @@ export const addProduct = async (req, res, next) => {
 
 export const showEditForm = async (req, res, next) => {
     try {
-        const product = await getProductById(req.params.id);
+        const product = await getProductById(req.validatedId);
 
         if (!product) {
             const err = new Error('Product not found');
@@ -93,32 +70,25 @@ export const showEditForm = async (req, res, next) => {
 
 export const editProduct = async (req, res, next) => {
     try {
-        const stockQuantity = parseStockQuantity(req.body.stock_quantity);
-        const existingProduct = await getProductById(req.params.id);
+        const existingProduct = await getProductById(req.validatedId);
 
         if(!existingProduct) {
             return res.status(404).send('Product not found');
-        }
-
-        if(stockQuantity === null) {
-            return res.status(400).send(
-                'Quantity availbale must be a non-negative whole number'
-            );
         }
 
         const imagePath = req.file
             ?`/uploads/products/${req.file.filename}`
             : null;
 
-        await updateProduct(req.params.id, {
+        await updateProduct(validatedId, {
             ...req.body,
-            stock_quantity: stockQuantity,
             image_sm: imagePath || existingProduct.image_sm,
             image_med: imagePath || existingProduct.image_med,
             image_lg: imagePath || existingProduct.image_lg
         });
 
         res.redirect('/dashboard/products');
+
     } catch (err) {
         console.error(err);
         next(err);
@@ -127,7 +97,7 @@ export const editProduct = async (req, res, next) => {
 
 export const removeProduct = async (req, res, next) => {
     try {
-        await deleteProduct(req.params.id);
+        await deleteProduct(req.validatedId);
         res.redirect('/dashboard/products');
     } catch (err) {
         console.error(err);
@@ -154,19 +124,7 @@ export const showManageProducts = async (req, res, next) => {
 export const showProfile = async (req, res, next) => {
     try {
         const userId = req.session.user.id;
-
-        const result = await pool.query(
-            `SELECT 
-                id, 
-                name, 
-                email,
-                (password_hash IS NOT NULL) AS has_password
-            FROM users
-            WHERE id = $1`,
-            [userId]
-        );
-
-        const user = result.rows[0];
+        const user = await userModel.getUserProfile(userId);
 
         if (!user) {
             return res.status(404).send('User not found');
@@ -180,7 +138,7 @@ export const showProfile = async (req, res, next) => {
             passwordUpdated: req.query.passwordUpdated === '1'
         });
 
-    }catch (err) {
+    } catch (err) {
         console.error(err);
         next(err);
     }
@@ -189,23 +147,9 @@ export const showProfile = async (req, res, next) => {
 export const updateProfile = async (req, res, next) => {
     try {
         const userId = req.session.user.id;
-        const name = req.body.name?.trim();
+        const name = req.body.name;
 
-        if (!name || name.length > 100) {
-            return res.status(400).send(
-                'Name must be between 1 and 100 characters'
-            );
-        }
-
-        const result = await pool.query(
-            `UPDATE users
-            SET name = $1
-            WHERE id = $2
-            RETURNING id, name, email`,
-            [name, userId]
-        );
-
-        const user = result.rows[0];
+        const user = await userModel.updateUserName(userId, name);
 
         if (!user) {
             return res.status(404).send('User not found');
@@ -230,15 +174,7 @@ export const updateProfile = async (req, res, next) => {
 export const showSecurity = async (req, res, next) => {
     try {
         const userId = req.session.user.id;
-
-        const result = await pool.query(
-            `SELECT password_hash
-            FROM users
-            WHERE id = $1`,
-            [userId]
-        );
-
-        const user = result.rows[0];
+        const user = await userModel.getUserPassword(userId);
 
         if (!user) {
             return res.status(404).send('User not found');
@@ -250,6 +186,7 @@ export const showSecurity = async (req, res, next) => {
             updated: req.query.updated === '1',
             error: null
         });
+
     }catch (err) {
         console.error(err);
         next(err);
@@ -259,47 +196,18 @@ export const showSecurity = async (req, res, next) => {
 export const updatePassword = async (req, res, next) => {
     try {
         const userId = req. session.user.id;
-        const {currentPassword, newPassword, confirmPassword } = req.body;
-        
-        const result = await pool.query(
-            `SELECT password_hash
-            FROM users
-            WHERE id = $1`,
-            [userId]
-        );
+        const {currentPassword, newPassword } = req.body;
 
-        const user = result.rows[0];
+        const user = await userModel.getUserPassword(userId);
 
-        if (!user) {
+        if(!user) {
             return res.status(404).send('User not found');
-        }
+        }  
 
         // google accounts that dont have local password
         if (!user.password_hash) {
             return res.status(403).send(
                 'Password changes are unavailable for this account'
-            );
-        }
-
-        if (
-            typeof currentPassword !== 'string' ||
-            typeof newPassword !== 'string' ||
-            typeof confirmPassword !== 'string'
-        ) {
-            return res.status(400).send('Invalid password information');
-        }
-        if (
-            newPassword.length < 8 || 
-            Buffer.byteLength(newPassword, 'utf8') > 72
-            ) {
-            return res.status(400).send(
-                'New password must be between 8 and no more than 72 bytes'
-            );
-        }
-
-        if (newPassword !== confirmPassword) {
-            return res.status(400).send(
-                'Passwords do not match'
             );
         }
 
@@ -316,15 +224,18 @@ export const updatePassword = async (req, res, next) => {
 
         const newHash = await bcrypt.hash(newPassword, 8);
 
-        await pool.query(
-            `UPDATE users
-            SET password_hash = $1
-            WHERE id = $2`,
-            [newHash, userId]
+        const updated = await userModel.updateUserPassword(
+            userId, 
+            newHash
         );
 
+        if (!updated) {
+            return res.status(404).send('User not found');
+        }
+
         res.redirect('/dashboard/profile?passwordUpdated=1');
-    }catch (err) {
+
+    } catch (err) {
         console.error(err);
         next(err);
     }
@@ -349,27 +260,23 @@ export const showAdminDashboard = (req, res) => {
 
 export const showManageEmployees = async (req, res, next) => {
     try {
-        const result = await pool.query(
-            `SELECT id, name, email, role
-            FROM users
-            WHERE role = $1
-            ORDER BY name ASC`,
-            ['employee']
-        );
+        const employees = await userModel.getUserByRole('employee');
+        const customers = await userModel.getUserByRole('user');
+        // const admins = await userModel.getUserByRole('admin');
 
-        const customerResult = await pool.query(
-            `SELECT id, name, email
-            FROM users
-            WHERE role = $1
-            ORDER BY name ASC`,
-            ['user']
-        );
+        console.log('Employees:', employees);
+        console.log('Type:', typeof employees);
+        console.log('Is array:', Array.isArray(employees));
+
+
+
 
         res.render('dashboard/admin-employee', {
             title: 'Employee Management',
             user: req.session.user,
-            employees: result.rows,
-            customers: customerResult.rows
+            employees,
+            customers,
+            // admins
         });
 
     } catch (err) {
@@ -379,23 +286,14 @@ export const showManageEmployees = async (req, res, next) => {
 };
 
 export const addEmployee = async (req, res, next) => {
-    const userId = Number(req.body.userId);
-
-    if (!Number.isSafeInteger(userId) || userId < 1) {
-        return res.status(400).send('Invalid user ID');
-    }
-
     try {
-        const result = await pool.query(
-            `UPDATE users
-            SET role = $1
-            WHERE id = $2 
-                AND role = $3
-            RETURNING id`,
-            ['employee', userId, 'user']
+        const updated = await userModel.updateUserRole(
+            req.validatedId, 
+            'employee',
+            'user'
         );
 
-        if (result.rowCount !== 1) {
+        if (!updated) {
             return res.status(400).send('Unable to add employee');
         }
 
@@ -406,27 +304,20 @@ export const addEmployee = async (req, res, next) => {
 };
 
 export const removeEmployee = async (req, res, next) => {
-    const userId = Number(req.params.id);
-
-    if (!Number.isSafeInteger(userId) || userId < 1) {
-        return res.status(400).send('Invalid user Id');
-    }
 
     try {
-        const result = await pool.query(
-            `UPDATE users
-            SET role = $1
-            WHERE id = $2
-                AND role = $3
-            RETURNING id`,
-        ['user', userId, 'employee']
+        const updated = await userModel.updateUserRole(
+            req.validatedId, 
+            'user', 
+            'employee'
         );
 
-        if (result.rowCount !== 1) {
+        if (!updated) {
             return res.status(400).send('Unable to remove empoyee');
         }
 
         return res.redirect('/dashboard/employees');
+
     } catch (err) {
         return next(err);
     }
@@ -434,16 +325,12 @@ export const removeEmployee = async (req, res, next) => {
 
 export const showContactMessages = async (req, res, next) => {
     try {
-        const result = await pool.query(`
-            SELECT *
-            FROM contact_messages
-            ORDER BY created_at DESC
-        `);
+        const messages = await contactModel.getAllContactMessages();
 
         res.render('contact/contact-responses', {
             title: 'Contact Messages', 
             user: req.session.user,
-            messages: result.rows
+            messages
         });
     } catch (err) {
         return next(err);
@@ -451,42 +338,18 @@ export const showContactMessages = async (req, res, next) => {
 };
 
 export const respondToContactMessage = async (req, res, next) => {
-    const messageId = Number(req.params.id);
-    const { response } = req.body;
-
-    if (!Number.isSafeInteger(messageId) || messageId < 1) {
-        return res.status(400).send('Invalid message ID');
-    }
-
-    if (
-        typeof response !== 'string' || 
-        !response.trim() || 
-        response.trim().length > 5000
-    ) {
-        return res.status(400).send('Invalid response');
-    }
-
     try {
-        const result = await pool.query(`
-            UPDATE contact_messages
-            SET response = $1,
-                responded_by = $2,
-                responded_at = NOW(),
-                status = 'responded'
-            WHERE id = $3
-                AND status = 'pending'
-            RETURNING id
-        `, [
-            response.trim(),
-            req.session.user.id,
-            messageId
-        ]);
-
-        if (result.rowCount !== 1) {
-            return res.status(400).send('Unable to respond to message');
+        const updated = await contactModel.respondToMessage(
+            req.validatedId,
+            req.body.response,
+            req.session.user.id
+        );
+        if(!updated) {
+            return res.status(400).send('Unable to respond to message')
         }
 
         return res.redirect('/dashboard/contact-messages');
+
     } catch (err) {
         return next(err);
     }
@@ -494,18 +357,16 @@ export const respondToContactMessage = async (req, res, next) => {
 
 export const showMyMessages = async (req, res, next) => {
     try {
-        const result = await pool.query(`
-            SELECT id, subject, message, status, response, created_at, responded_at
-            FROM contact_messages
-            WHERE user_id = $1
-        ORDER BY created_at DESC
-        `, [req.session.user.id]);
+        const messages = await contactModel.getContactMessagesByUserId(
+            req.session.user.id
+        );
 
         res.render('dashboard/my-messages', {
             title: 'My Messages', 
             user: req.session.user, 
-            messages: result.rows
+            messages
         });
+        
     } catch (err) {
         return next(err);
     }

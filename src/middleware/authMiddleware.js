@@ -1,4 +1,4 @@
-import pool from '../db/pgSQL.js';
+import * as userModel from '../models/userModel.js';
 
 export const requireLogin = (req, res, next) => {
     if (req.session?.user) {
@@ -14,20 +14,17 @@ export const requireAdmin = async (req, res, next) => {
     }
 
     try {
-        const result = await pool.query(
-            `SELECT role 
-            FROM users 
-            WHERE id = $1`, 
-            [req.session.user.id]
+        const role = await userModel.getUserRole(
+            req.session.user.id
         );
 
-        const role = result.rows[0]?.role;
+        if (!role) {
+            return res.status(403).send('Access denied');
+        }
 
         if (role !== 'admin') {
             return res.status(403).send('Access denied');
         }
-
-        req.session.user.role = role;
 
         return next();
 
@@ -42,14 +39,15 @@ export const requireEmployee = async (req, res, next) => {
     }
 
     try {
-        const result = await pool.query(
-            `SELECT role 
-            FROM users 
-            WHERE id = $1`,
-            [req.session.user.id]
+        const role = await userModel.getUserRole (
+            req.session.user.id
         );
 
-        const role = result.rows[0]?.role;
+        if (!role) {
+            return res.status(403).send('Access denied');
+        }
+
+        req.session.user.role = role;
 
         if (role !== 'employee' && role !== 'admin') {
             return res.status(403).send('Access denied');

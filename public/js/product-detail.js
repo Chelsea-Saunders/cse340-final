@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const maxQuantity = Math.min(available, 10);
 
         quantityInput.max = maxQuantity;
-        quantityInput.disables = available === 0;
+        quantityInput.disabled = available === 0;
 
         if (available === 0) {
             quantityInput.value = 1;
@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const quantity = Number(quantityInput.value);
 
         if (!quantityInput.checkValidity()) {
-            quantityInput.reportVAlidity();
+            quantityInput.reportValidity();
             return;
         }
 
@@ -95,7 +95,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         } catch (err) {
             console.error('Unable to add item to cart', err);
-            message.textContent = `Unable to add ${productName} to cart`;
+            message.textContent = 
+            `Unable to add ${productName} to cart: ${err.message}`;
 
         } finally {
             isAdding = false;

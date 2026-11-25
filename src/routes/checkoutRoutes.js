@@ -7,6 +7,8 @@ import {
     showMyOrders
 } from '../controllers/checkoutController.js';
 
+// import { validateId } from '../middleware/validateMiddleware.js';
+
 const router = Router();
 
 // GET checkout route
@@ -20,6 +22,12 @@ router.get(
     requireLogin,
     showConfirmation
 );
+
+// router.get(
+//     '/confimration/:orderId',
+//     validateId('params', 'orderId'),
+//     showConfirmation
+// );
 
 router.post('/', requireLogin, placeOrder);
 

@@ -1,4 +1,4 @@
-import pool from '../db/pgSQL.js';
+import * as contactModel from '../models/contactModel.js';
 
 export const showContact = (req, res) => {
     res.render('contact/contact-index', {
@@ -10,54 +10,22 @@ export const showContact = (req, res) => {
 export const submitContact = async (req, res, next) => {
     const { name, email, subject, message } = req.body;
 
-    if (
-        typeof name !== 'string' ||
-        typeof email !== 'string' ||
-        typeof subject !== 'string' ||
-        typeof message !== 'string'
-    ) {
-        return res.status(400).send('Invalid form submission');
-    }
-
-    const cleanName = name.trim();
-    const cleanEmail = email.trim();
-    const cleanSubject = subject.trim();
-    const cleanMessage = message.trim();
-
-    if (
-        !cleanName ||
-        !cleanEmail ||
-        !cleanSubject ||
-        !cleanMessage ||
-        cleanName.length > 100 ||
-        cleanEmail.length > 255 ||
-        cleanSubject.length > 150 ||
-        cleanMessage.length > 5000 
-    ) {
-        return res.status(400).send('invalid contact information');
-    }
-
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail)) {
-        return res.status(400).send('Invalid email address');
-    }
-
     const userId = req.session?.user?.id ?? null;
 
     try {
-        await pool.query(
-            `INSERT INTO contact_messages
-            (user_id, name, email, subject, message)
-            VALUES ($1, $2, $3, $4, $5)`,
-            [
-                userId, 
-                cleanName, 
-                cleanEmail,
-                cleanSubject, 
-                cleanMessage
-            ]
-        );
-
+        const created = await contactModel.createContactMessage({
+            userId, 
+            name, 
+            email,
+            subject, 
+            message
+        });
+            
+        if (!created) { 
+            throw new Error('Una ble to create contact message');
+        }
         return res.redirect('/contact?success=true');
+        
     } catch (err) {
         return next(err);
     }

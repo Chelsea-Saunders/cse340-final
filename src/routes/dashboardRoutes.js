@@ -1,68 +1,159 @@
-
+// import express from 'express';
 import { Router } from 'express';
-import { uploadProductImage } from '../middleware/uploadMiddleware.js';
-import {
-    showProfile,
-    updateProfile,
-    showSecurity,
-    updatePassword,
-    showDashboard, 
-    showManageProducts,
-    showAddForm, 
-    addProduct, 
-    showEditForm, 
-    editProduct, 
-    removeProduct,
-    showEmployeeDashboard,
-    showAdminDashboard,
-    showManageEmployees,
-    addEmployee, 
-    removeEmployee,
-    showContactMessages,
-    respondToContactMessage,
-    showMyMessages
-} from '../controllers/dashboardController.js';
+
+import * as dashboardController 
+    from '../controllers/dashboardController.js';
 
 import { 
     requireLogin,
     requireEmployee,
-    requireAdmin 
+    requireAdmin
 } from '../middleware/authMiddleware.js';
+
+import {
+    validateProfileName, 
+    validatePasswordChange
+} from '../middleware/userMiddleware.js';
+
+import { validateId } from '../middleware/validateMiddleware.js';
+
+import { validateContactResponse } from '../middleware/contactMiddleware.js';
+
+import {
+    validateStockQuantity,
+    requireProductImage
+} from '../middleware/productMiddleware.js';
+
+import { uploadProductImage } from '../middleware/uploadMiddleware.js';
+
 const router = Router();
 
 router.use(requireLogin);
 
-// anyone logged in can access their dashboard
-router.get('/', showDashboard);
+// general dashboard
+router.get('/', dashboardController.showDashboard);
 
-router.get('/profile', showProfile);
-router.get('/messages', showMyMessages);
-router.post('/profile', updateProfile);
+// user profile
+router.get(
+    '/profile', 
+    dashboardController.showProfile
+);
 
-router.get('/security', showSecurity);
-router.post('/security', updatePassword);
+router.post(
+    '/profile', 
+    validateProfileName,
+    dashboardController.updateProfile
+);
+
+router.get(
+    '/messages', 
+    dashboardController.showMyMessages
+);
+
+// account security
+router.get(
+    '/security', 
+    dashboardController.showSecurity
+);
+
+router.post(
+    '/security', 
+    validatePasswordChange,
+    dashboardController.updatePassword
+);
 
 // employee dashboard
-router.get('/employee', requireEmployee, showEmployeeDashboard);
-router.get('/contact-messages', requireEmployee, showContactMessages);
-router.post('/contact-messages/:id/respond', requireEmployee, respondToContactMessage);
+router.get(
+    '/employee', 
+    requireEmployee, 
+    dashboardController.showEmployeeDashboard
+);
+
+// contact message route
+router.get(
+    '/contact-messages', 
+    requireEmployee, 
+    dashboardController.showContactMessages
+);
+
+router.post(
+    '/contact-messages/:id/respond', 
+    requireEmployee, 
+    validateId('params', 'id'),
+    validateContactResponse,
+    dashboardController.respondToContactMessage
+);
 
 // admin dashboard
-router.get('/admin', requireAdmin, showAdminDashboard);
+router.get(
+    '/admin', 
+    requireAdmin, 
+    dashboardController.showAdminDashboard
+);
 
 // admin employee management
-router.get('/employees', requireAdmin, showManageEmployees);
-router.post('/employees/add', requireAdmin, addEmployee);
-router.post('/employees/remove/:id', requireAdmin, removeEmployee);
+router.get(
+    '/employees', 
+    requireAdmin, 
+    dashboardController.showManageEmployees
+);
 
-// ONLY ADMIN can manage products
-router.get('/products', requireAdmin, showManageProducts);
-router.get('/add', requireAdmin, showAddForm);
-router.post('/add', requireAdmin, uploadProductImage, addProduct);
+router.post(
+    '/employees/add', 
+    requireAdmin, 
+    validateId('body', 'userId'),
+    dashboardController.addEmployee
+);
 
-router.get('/edit/:id', requireAdmin, showEditForm);
-router.post('/edit/:id', requireAdmin, uploadProductImage, editProduct);
+router.post(
+    '/employees/remove/:id', 
+    requireAdmin, 
+    validateId('params', 'id'),
+    dashboardController.removeEmployee
+);
 
-router.post('/delete/:id', requireAdmin, removeProduct);
+// product management
+router.get(
+    '/products', 
+    requireAdmin, 
+    dashboardController.showManageProducts
+);
+
+router.get(
+    '/add', 
+    requireAdmin, 
+    dashboardController.showAddForm
+);
+router.post(
+    '/add', 
+    requireAdmin, 
+    uploadProductImage,
+    validateStockQuantity,
+    requireProductImage, 
+    dashboardController.addProduct
+);
+
+router.get(
+    '/edit/:id', 
+    requireAdmin, 
+    validateId('params', 'id'),
+    dashboardController.showEditForm
+);
+
+router.post(
+    '/edit/:id', 
+    requireAdmin, 
+    validateId('params', 'id'),
+    uploadProductImage, 
+    validateStockQuantity,
+    dashboardController.editProduct
+);
+
+router.post(
+    '/delete/:id', 
+    requireAdmin, 
+    validateId('params', 'id'),
+    dashboardController.removeProduct
+);
 
 export default router;

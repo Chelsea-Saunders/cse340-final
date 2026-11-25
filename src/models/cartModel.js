@@ -1,5 +1,4 @@
 import * as productModel from './productModel.js';
-import pool from '../db/pgSQL.js';
 
 // retrieve cart product details
 export const getCartItems = async (cart) => {
