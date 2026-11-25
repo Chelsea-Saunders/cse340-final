@@ -13,6 +13,19 @@
 [data-cart-items]:empty {
     display: none;
 }
+.cart-product-image-link {
+    display: block;
+    cursor: pointer;
+}
+.cart-product-name-link {
+    color: inherit;
+    text-decoration: none
+}
+.cart-product-name-link:hover {
+        text-decoration: none;
+        color: #596656;
+    }
+
 /* individual product card */
 .cart-item {
     display: flex;

@@ -1,3 +1,5 @@
+import pool from '../db/pgSQL.js';
+
 export const requireLogin = (req, res, next) => {
     if (req.session?.user) {
         return next();
@@ -6,28 +8,54 @@ export const requireLogin = (req, res, next) => {
     res.redirect('/auth/login');
 };
 
-export const requireAdmin = (req, res, next) => {
+export const requireAdmin = async (req, res, next) => {
     if (!req.session?.user) {
         return res.redirect('/auth/login');
     }
 
-    if (req.session.user.role !== 'admin') {
-        return res.status(403).json({
-            message: 'Access denied'
-        });
-    }
-    return next();
-}
+    try {
+        const result = await pool.query(
+            `SELECT role 
+            FROM users 
+            WHERE id = $1`, 
+            [req.session.user.id]
+        );
 
-export const requireEmployee = (req, res, next) => {
+        const role = result.rows[0]?.role;
+
+        if (role !== 'admin') {
+            return res.status(403).send('Access denied');
+        }
+
+        req.session.user.role = role;
+
+        return next();
+
+    } catch (err) {
+        return next(err);
+    }
+};
+
+export const requireEmployee = async (req, res, next) => {
     if(!req.session?.user) {
         return res.redirect('/auth/login');
     }
 
-    const role = req.session.user.role;
+    try {
+        const result = await pool.query(
+            `SELECT role 
+            FROM users 
+            WHERE id = $1`,
+            [req.session.user.id]
+        );
 
-    if(role !== 'employee' && role !== 'admin') {
-        return res.status(403).send('Access denied');
+        const role = result.rows[0]?.role;
+
+        if (role !== 'employee' && role !== 'admin') {
+            return res.status(403).send('Access denied');
+        }
+        return next();
+    } catch (err) {
+        return next(err);
     }
-    next();
 };

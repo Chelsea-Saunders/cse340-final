@@ -6,6 +6,7 @@ export const getCartItems = async (sessionId) => {
             p.id, 
             p.name,
             p.price,
+            r.id AS reservation_id,
             COALESCE(p.image_med, p.image_sm) AS image,
             r.quantity,
             r.expires_at
@@ -20,6 +21,7 @@ export const getCartItems = async (sessionId) => {
 
     return result.rows.map(item=> ({
         id: item.id,
+        reservationId: item.reservation_id,
         name: item.name,
         price: Number(item.price),
         image: item.image,
@@ -42,7 +44,7 @@ export const reserveProduct = async (sessionId, productId, quantity) => {
     try {
         await client.query('BEGIN');
 
-        // only allow one item in a cart at a time(no duplicate orders)
+        // lock product row to prevent reservations from exceeding available inventory
         const productResult = await client.query(
             `SELECT stock_quantity
             FROM products

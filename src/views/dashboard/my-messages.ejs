@@ -1,0 +1,49 @@
+<%- include('../partials/header') %>
+
+<main class="account-dashboard-page my-messages-page">
+    <h1><%= title %></h1>
+
+    <p class="pp">View your inquiries and our responses</p>
+
+    <% if (messages.length === 0) { %>
+        <p>You have not submitted any messages</p>
+    <% } else { %>
+        <% messages.forEach(message => { %>
+            <div class="customer-message-card">
+                <h2><%= message.subject %></h2>
+                <p>
+                    <strong>Submitted:</strong>
+                    <%= new Date(message.created_at).toLocaleDateString() %>
+                </p>
+
+                <p>
+                    <strong>Status:</strong>
+                    <%= message.status %>
+                </p>
+
+                <h3>Your Message</h3>
+                <p><%= message.message %></p>
+
+                <div class="customer-message-response">
+                    <h3>Our Response</h3>
+
+                    <% if (message.response) { %>
+                        <p><%=message.response %></p>
+                    <% } else { %>
+                        <p>Awaiting a response from our team.</p>
+                    <% } %>
+                </div>
+            </div>
+        <% }); %>
+    <% } %>
+
+    <a href="/contact" class="continue-shopping">
+        Send a New Message
+    </a>
+
+    <a href="/dashboard" class="continue-shopping">
+        Back to My Account
+    </a>
+</main>
+
+<%- include('../partials/footer') %>

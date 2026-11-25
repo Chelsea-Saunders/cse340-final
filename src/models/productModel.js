@@ -97,12 +97,7 @@ export const updateProduct = async (id, {
             id
         ]
     );
-
-
-    console.log('Updated product rows:', result.rowCount);
-    console.log('Update product:', result.rows[0]);
-
-
+    
     return result.rows[0];
 };
 

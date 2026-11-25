@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { requireLogin } from '../middleware/authMiddleware.js';
 import { 
+    showCheckout,
     placeOrder,
     showConfirmation,
     showMyOrders
@@ -8,11 +9,9 @@ import {
 
 const router = Router();
 
-router.get('/', requireLogin, (req, res) => {
-    res.render('checkout/checkout-index', {
-        title:'Checkout'
-    });
-});
+// GET checkout route
+router.get('/', requireLogin, showCheckout);
+
 // orders page
 router.get('/orders', requireLogin, showMyOrders);
 // order confirmation

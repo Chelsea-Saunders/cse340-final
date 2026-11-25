@@ -61,3 +61,10 @@ The goal of this project is to refractor and expand a static website into a secu
 
 ## Render
 [View on Render] (https://cse340-final-8xt5.onrender.com)
+
+## LOGIN ACCOUNTS
+admin login: admin@email.com
+employee login: employee@email.com
+user login: user@email.com
+
+password: THE ONE SUGGESTED ON THE ASSIGNMENT

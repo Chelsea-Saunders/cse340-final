@@ -4,23 +4,21 @@
     <h1><%= title %></h1>
 
     <p class="welcome-p">Welcome, <%= user.name %></p>
-    <p class="p">This is your Angle Bar B employee dahsboard</p>
+    <p class="p">This is your Angle Bar B employee dashboard</p>
 
     <section class="account-dashboard">
-        <div class="account-card">
-            <h2>Order Management</h2>
-            <p>View and manage customer orders</p>
-            <p>Coming Soon!</p>
-        </div>
+        <a href="/dashboard/contact-messages" class="account-card">
+            <h2>Contact Messages</h2>
+            <p>View and respond to customer inquires</p>
+        <a/>
 
-        <div class="account-card">
-            <h2>Inventory</h2>
-            <p>View product inventory and availability</p>
-            <p>Coming Soon!</p>
-        </div>
+        <a href="/dashboard/profile" class="account-card">
+            <h2>My Profile</h2>
+            <p>Update your personal information and password</p>
+        </a>
     </section>
 
-    <a href="/dashboard" class="continue-shopping">
+    <a href="/dashboard/profile" class="continue-shopping">
         Back to My Account
     </a>
 </main>

@@ -50,7 +50,17 @@ CREATE TABLE IF NOT EXISTS orders (
 	state VARCHAR(100) NOT NULL,
 	zip VARCHAR(20) NOT NULL, 
 	total NUMERIC(10, 2) NOT NULL CHECK (total >= 0),
-	status VARCHAR(20) NOT NULL DEFAULT 'pending', 
+	status VARCHAR(20) NOT NULL DEFAULT 'pending'
+        CONSTRAINT order_status_check
+        CHECK (
+            status IN (
+                'pending', 
+                'processing',
+                'shipped',
+                'delivered',
+                'cancelled'
+            )
+        ), 
 	created_at timestamp DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -63,3 +73,17 @@ CREATE TABLE IF NOT EXISTS order_items (
 	unit_price NUMERIC(10, 2) NOT NULL CHECK (unit_price >= 0)
 );
 
+CREATE TABLE if NOT EXISTS contact_messages (
+	id SERIAL PRIMARY KEY,
+	user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+	name VARCHAR(100) NOT NULL,
+	email VARCHAR(255) NOT NULL,
+	subject VARCHAR(150) NOT NULL,
+	message TEXT NOT NULL,
+	status VARCHAR(20) NOT NULL DEFAULT 'pending'
+		CHECK (status IN ('pending', 'responded', 'resolved')),
+	response TEXT,
+	responded_by INTEGER REFERENCES users(id) ON DELETE SET NULL,
+	responded_at TIMESTAMPTZ,
+	created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);

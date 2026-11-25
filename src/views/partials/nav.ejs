@@ -14,12 +14,6 @@
             <li><a href="/dashboard">Dashboard</a></li>
             <li><a href="/checkout/orders">My Orders</a></li>
 
-            <!-- admin-only nav -->
-             <% if (locals.isAdmin) { %>
-            <li><a href="/admin/users">All Users</a></li>
-            <li><a href="/contact/responses">Contact Responses</a></li>
-            <% } %>
-
             <li>
                 <form method="POST" action="/auth/logout" class="logout-form">
                     <button type="submit" class="logout-form-button">Logout</button>

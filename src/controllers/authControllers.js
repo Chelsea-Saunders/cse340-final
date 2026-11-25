@@ -133,8 +133,6 @@ export const register = async (req, res, next) => {
 
 // login
 export const login = async (req, res, next) => {
-
-    console.log('LOGIN POST CONTROLLER REACHED');
     try {
         const { email, password } = req.body;
 
@@ -176,7 +174,7 @@ export const login = async (req, res, next) => {
                 role: user.role
             };
 
-            console.log('Login session user ID:', req.session.user.id);
+            // console.log('Login session user ID:', req.session.user.id);
 
             if (guestCart) {
                 req.session.cart = guestCart;
@@ -189,7 +187,7 @@ export const login = async (req, res, next) => {
             });
         });
     } catch (err) {
-        console.log(err);
+        console.error(err);
         next(err);
     }
 };
@@ -237,7 +235,7 @@ export const startGoogleLogin = async (req, res, next) => {
             return res.redirect(authorizatonUrl.href);
         });
     } catch (err) {
-        console.log(err);
+        console.error(err);
         next(err);
     }
 };

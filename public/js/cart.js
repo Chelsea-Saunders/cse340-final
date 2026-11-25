@@ -36,30 +36,28 @@ import {
     article.className = 'cart-item';
     article.dataset.productId = item.id;
 
+    const productUrl = `/shop/item/${encodeURIComponent(item.id)}`;
+
     // product image
     const image = document.createElement('img');
+    const imageLink = document.createElement('a');
+    imageLink.href = productUrl;
+    imageLink.className = 'cart-product-image-link';
+    imageLink.append(image);
 
     if (item.image) {
-        // const imageUrl = new URL (
-        //     item.image, 
-        //     window.location.origin
-        // );
+        try {
+            const imageUrl = new URL(
+                item.image,
+                window.location.origin
+            );
 
-        if (item.image) {
-            try {
-                const imageUrl = new URL(
-                    item.image,
-                    window.location.origin
-                );
-
-                if (imageUrl.origin === window.location.origin) {
-                    image.src = imageUrl.href;
-                }
-            } catch (err) {
-                console.error('Invalid product image url:', err);
+            if (imageUrl.origin === window.location.origin) {
+                image.src = imageUrl.href;
             }
+        } catch (err) {
+            console.error('Invalid product image url:', err);
         }
-        image.alt = item.name
     }
     image.alt = item.name;
 
@@ -67,7 +65,11 @@ import {
     const info = document.createElement('div');
 
     const name = document.createElement('h3');
-    name.textContent = item.name;
+    const nameLink = document.createElement('a');
+    nameLink.href = productUrl;
+    nameLink.textContent = item.name;
+    nameLink.className = 'cart-product-name-link';
+    name.append(nameLink);
 
     const price = document.createElement('p');
     price.textContent = `$${Number(item.price).toFixed(2)}`;
@@ -107,7 +109,7 @@ import {
     );
 
     info.append(name, price, timer, controls);
-    article.append(image, info);
+    article.append(imageLink, info);
 
     return article;
 }

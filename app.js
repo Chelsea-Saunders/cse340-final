@@ -15,6 +15,7 @@ import checkoutRoutes from './src/routes/checkoutRoutes.js';
 import dashboardRoutes from './src/routes/dashboardRoutes.js';
 import { addCartLocals } from './src/middleware/cartMiddleware.js';
 import { addLocalVariables } from './src/middleware/global.js';
+import contactRoutes from './src/routes/contactRoutes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -53,9 +54,6 @@ app.use((req, res, next) => {
     res.locals.NODE_ENV = NODE_ENV;
     res.locals.currentYear = new Date().getFullYear();
 
-    console.log('Session user:', req.session?.user);
-    console.log('logged in:', res.locals.isLoggedIn);
-
     next();
 });
 
@@ -67,6 +65,7 @@ app.use('/cart', cartRoutes);
 app.use('/auth', authRoutes);
 app.use('/checkout', checkoutRoutes);
 app.use('/dashboard', dashboardRoutes);
+app.use('/contact', contactRoutes);
 
 // 404's
 app.use((req, res, next) => {

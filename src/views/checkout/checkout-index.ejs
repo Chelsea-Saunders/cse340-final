@@ -5,14 +5,71 @@
 
     <p class="p">Review your order and enter your shipping information.</p>
 
+    <section class="checkout-summary">
+        <h2>Order Summary</h2>
+
+        <div class="checkout-items">
+            <% items.forEach(item => { %>
+                <div class="checkout-item">
+                    <img 
+                        src="<%= item.image %>"
+                        alt="<%= item.name %>"
+                        class="checkout-item-img"
+                    >
+
+                    <div class="checkout-item-details">
+                        <h3><%= item.name %></h3>
+
+                        <p>Quantity: <%= item.quantity %></p>
+
+                        <p>
+                            Unit Price: $<%= item.price.toFixed(2) %>
+                        </p>
+
+                        <p
+                            class="reservation-timer"
+                            data-expires-at="<%= new Date(item.expiresAt).toISOString() %>"
+                            data-checkout-timer
+                        >
+                            Calculating reservation time...
+                        </p>
+                    </div>
+
+                    <p class="checkout-item-subtotal">
+                        $<%= item.subtotal.toFixed(2) %>
+                    </p>
+                </div>
+            <% }); %>
+        </div>
+
+        <div class="checkout-total">
+            <h3>Order Total</h3>
+            <strong>$<%= total.toFixed(2) %></strong>
+        </div>
+    </section>
+
+    <div class="checkout-expiration-message"
+        data-checkout-expiration
+        role="alert"
+        hidden
+    >
+        <p>
+            One or more of the items in your cart have expired. 
+            Please return to review your order.
+        </p>
+        <a href="/cart">Return to Cart</a>
+    </div>
+
     <form action="/checkout" method="POST" class="checkout-form">
+        <input type="hidden" name="checkoutToken" value="<%= checkoutToken %>">
         <div class="form-group">
             <label for="fullName">Full Name</label>
             <input 
                 type="text"
                 id="fullName"
                 name="fullName"
-                value="<%- currentUser?.name || '' %>"
+                value="<%= currentUser?.name || '' %>"
+                maxlength="100"
                 required
             >
         </div>
@@ -23,6 +80,7 @@
                 type="text"
                 id="address"
                 name="address"
+                maxlength="255"
                 required
             >
         </div>
@@ -33,6 +91,7 @@
                 type="text"
                 id="city"
                 name="city"
+                maxlength="100"
                 required
             >
         </div>
@@ -43,6 +102,7 @@
                 type="text"
                 id="state"
                 name="state"
+                maxlength="100"
                 required
             >
         </div>
@@ -53,11 +113,12 @@
                 type="text"
                 id="zip"
                 name="zip"
+                maxlength="20"
                 required
             >
         </div>
 
-        <button type="submit">
+        <button type="submit" data-place-order>
             Place Order
         </button>
     </form>

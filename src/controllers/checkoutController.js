@@ -1,8 +1,62 @@
-import * as cartModel from '../models/cartModel.js';
+
 import * as orderModel from '../models/orderModel.js';
+import * as reservationModel from '../models/reservationModel.js';
+import * as cartModel from '../models/cartModel.js';
+import { randomUUID } from 'node:crypto';
+
+export const showCheckout = async (req, res, next) => {
+    try {
+        const items = await reservationModel.getCartItems(
+            req.sessionID
+        );
+
+        // prevent checkout with empty cart
+        if (items.length === 0) {
+            return res.redirect('/cart');
+        }
+
+        // calculate total at checkout
+        const total = cartModel.getCartTotal(items);
+
+        // store a snapshot of customer's reviewed cart
+        req.session.checkoutSnapshot = items.map(item => ({
+            reservationId: String(item.reservationId),
+            productId: item.id, 
+            quantity: item.quantity,
+            price: item.price,
+            name: item.name,
+            expiresAt: new Date(item.expiresAt).toISOString()
+        }));
+
+        req.session.checkoutToken = randomUUID();
+
+        res.render('checkout/checkout-index', {
+            title: 'Checkout',
+            items, 
+            total,
+            checkoutToken: req.session.checkoutToken
+        });
+    } catch (err) {
+        console.error('Checkout page error:', err);
+        next(err);
+    }
+};
 
 export const placeOrder = async (req, res, next) => {
     try {
+        const { checkoutToken } = req.body;
+        
+        if (
+            typeof checkoutToken !== 'string' || 
+            !req.session.checkoutToken ||
+            checkoutToken !== req.session.checkoutToken ||
+            !Array.isArray(req.session.checkoutSnapshot) ||
+            req.session.checkoutSnapshot.length === 0 
+        ) {
+            return res.status(409).send(
+                'Your checkout session has changed. Please review your cart and try again'
+            );
+        }
         const { fullName, address, city, state, zip } = req.body;
 
         // validate shipping info
@@ -13,54 +67,13 @@ export const placeOrder = async (req, res, next) => {
                 typeof value !== 'string' || !value.trim()
             ) ||
             fullName.trim().length > 100 ||
-            address.trim().length > 255 |
+            address.trim().length > 255 ||
             city.trim().length > 100 ||
             state.trim().length > 100 ||
             zip.trim().length > 20
         ) {
             return res.status(400).send(
                 'Please provide valid shipping information.'
-            );
-        }
-
-        // read cart from session
-        const sessionCart = req.session.cart;
-
-        if (!Array.isArray(sessionCart) || sessionCart.length === 0) {
-            return res.status(400).send(
-                'Your cart is empty'
-            );
-        }
-
-        // validate every cart entry before saving an order
-        const validCart = sessionCart.every(item => 
-            Number.isInteger(item.productId) &&
-            item.productId > 0 &&
-            Number.isInteger(item.quantity) && 
-            item.quantity >= 1 &&
-            item.quantity <= 10
-        );
-
-        if (!validCart) {
-            return res.status(400).send(
-                'Your cart contains an invalid item'
-            );
-        }
-
-        // get current product from PostgreSQL
-        const items = await cartModel.getCartItems(sessionCart);
-
-        if (items.length !== sessionCart.length) {
-            return res.status(400).send(
-                'A product in your cart is no longer available'
-            );
-        }
-
-        const total = cartModel.getCartTotal(items);
-
-        if (!Number.isFinite(total) || total < 0) {
-            return res.status(400).send(
-                'Unable to calculate your order total'
             );
         }
 
@@ -72,21 +85,21 @@ export const placeOrder = async (req, res, next) => {
                 address: address.trim(),
                 city: city.trim(),
                 state: state.trim(),
-                zip: zip.trim(),
-                total
+                zip: zip.trim()
             },
-            items
+            req.sessionID,
+            req.session.checkoutSnapshot
         );
 
         //clear cart after order is saved
-        req.session.cart = [];
+        return res.redirect(`/checkout/confirmation/${orderId}`);
 
-        req.session.save(err => {
-            if (err) return next(err);
-
-            res.redirect(`/checkout/confirmation/${orderId}`);
-        });
     } catch (err) {
+        // expected checkout  errors
+        if (err instanceof orderModel.CheckoutError) {
+            return res.status(409).send(err.message);
+        }
+        // unexpected server errors
         console.error('Checkout error:', err);
         next(err);
     }
@@ -142,7 +155,7 @@ export const showMyOrders = async (req, res, next) => {
             orders: orderWithItems
         });
     } catch (err) {
-        console.error('My orders errof:', err);
+        console.error('My orders error:', err);
         next(err);
     }
 };

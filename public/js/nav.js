@@ -1,14 +1,10 @@
 
-console.log('header.js loaded');
-
 document.addEventListener('DOMContentLoaded', function() {
 
     const container = document.querySelector('.dropdown-container');
     const menu = document.getElementById('dropdown-links');
     const hamburger = document.getElementById('hamburger-icon');
     const closeIcon = document.getElementById('close-icon');
-
-    console.log({ container, menu, hamburger, closeIcon });
 
     if (!container || !menu || !hamburger || !closeIcon) {
         console.error('Missing nav elements');

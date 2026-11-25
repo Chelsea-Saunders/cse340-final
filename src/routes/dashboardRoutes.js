@@ -14,7 +14,13 @@ import {
     editProduct, 
     removeProduct,
     showEmployeeDashboard,
-    showAdminDashboard
+    showAdminDashboard,
+    showManageEmployees,
+    addEmployee, 
+    removeEmployee,
+    showContactMessages,
+    respondToContactMessage,
+    showMyMessages
 } from '../controllers/dashboardController.js';
 
 import { 
@@ -30,6 +36,7 @@ router.use(requireLogin);
 router.get('/', showDashboard);
 
 router.get('/profile', showProfile);
+router.get('/messages', showMyMessages);
 router.post('/profile', updateProfile);
 
 router.get('/security', showSecurity);
@@ -37,9 +44,16 @@ router.post('/security', updatePassword);
 
 // employee dashboard
 router.get('/employee', requireEmployee, showEmployeeDashboard);
+router.get('/contact-messages', requireEmployee, showContactMessages);
+router.post('/contact-messages/:id/respond', requireEmployee, respondToContactMessage);
 
 // admin dashboard
 router.get('/admin', requireAdmin, showAdminDashboard);
+
+// admin employee management
+router.get('/employees', requireAdmin, showManageEmployees);
+router.post('/employees/add', requireAdmin, addEmployee);
+router.post('/employees/remove/:id', requireAdmin, removeEmployee);
 
 // ONLY ADMIN can manage products
 router.get('/products', requireAdmin, showManageProducts);

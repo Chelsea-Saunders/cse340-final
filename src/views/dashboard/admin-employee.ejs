@@ -1,0 +1,94 @@
+<%- include('../partials/header') %>
+
+<main class="account-dashboard-page">
+    <h1><%= title %></h1>
+
+    <p class="p">View and manage employee accounts.</p>
+
+    <% if (employees.length === 0) { %>
+    <p>No employees found</p>
+    <% } else { %>
+        <div class="management-table-wrapper">
+            <table class="management-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <% employees.forEach(employee => { %>
+                        <tr>
+                            <td><%= employee.name %></td>
+                            <td><%= employee.email %></td>
+                            <td><%= employee.role %></td>
+                            <td>
+                                <form 
+                                    action="/dashboard/employees/remove/<%= employee.id %>"
+                                    method="POST"
+                                    onsubmit="return confirm('Are you sure you want to remove this employee?');"
+                                >
+
+                                <button 
+                                    type="submit"
+                                    class="remove-employee-btn"
+                                >
+                                    Remove
+                                </button>
+
+                                </form>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+    <% } %>
+
+    <section class="employee-add-section">
+        
+        <h2>Add Employee</h2>
+
+        <% if (customers.length === 0) { %>
+            <p>No eligible customer accounts found.</p>
+        <% } else { %>
+            <form action="/dashboard/employees/add" method="POST">
+                <div class="form-group">
+                    <label 
+                        for="userId">
+                        Select Customer
+                    </label>
+
+                    <select 
+                        id="userId"    
+                        name="userId" 
+                        required
+                    >
+                    <option value="">Select a customer</option>
+
+                    <% customers.forEach(customer => { %>
+
+                        <option value="<%= customer.id %>">
+                            <%= customer.name %> - <%= customer.email %>
+                        </option>
+                        <% }); %>
+                    </select>
+                </div>
+
+                <button 
+                    type="submit">
+                    Add Employee
+                </button>
+            </form>
+        <% } %>
+    </section>
+
+    <a href="/dashboard/admin" class="continue-shopping">
+        Back to Admin Dashboard
+    </a>
+</main>
+
+<%- include('../partials/footer') %>
